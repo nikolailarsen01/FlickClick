@@ -16,5 +16,24 @@
                 <img class="movie-banners-item-picture" src="@item.picturePath" />
             </div>
         }
-        </div>
     </div>
+</div>
+
+<div class="movie-banners">
+    <div class="movie-banners-header">
+        <p class="movie-banners-header-item">MOST COMMENTED</p>
+        <a class="movie-banners-header-item right" href="dinmor.lol">See all</a>
+    </div>
+    <div class="movie-banners-items">
+        @foreach (var item in Model)
+        {
+            <div class="movie-banners-item">
+                <img class="movie-banners-item-picture" src="@item.picturePath" />
+            </div>
+        }
+    </div>
+</div>
+
+<div class="movie-extra">
+
+</div>

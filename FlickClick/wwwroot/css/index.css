@@ -1,11 +1,9 @@
-﻿.container {
-    margin-top: 10% !important;
-}
-
+﻿
 .movie-banners{
     width: 100%;
     margin-left:auto;
     margin-right:auto;
+    margin-bottom: 5%;
 }
 
 .movie-banners-header{
@@ -33,4 +31,8 @@
 
 .movie-banners-item-picture{
     width:100%;
+}
+
+.movie-extra {
+    border-bottom: 2px dotted black;
 }
