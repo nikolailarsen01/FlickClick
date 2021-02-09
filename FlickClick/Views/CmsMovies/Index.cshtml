@@ -6,6 +6,11 @@
     ViewData["Stylesheet"] = "/css/cmsMovies.css";
 }
 
-<div class="movieList">
-
+<div class="movie-list">
+    @foreach (var item in Model)
+    {
+        <div class="movie-list-item">
+            <p>"@item.title"</p>
+        </div>
+    }
 </div>
