@@ -9,6 +9,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+<<<<<<< HEAD
+=======
+    <PackageReference Include="MySql.Data" Version="8.0.23" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+>>>>>>> a3e56c37bcaae2029cb0dd758d3a8611542d4150
   </ItemGroup>
 
 </Project>

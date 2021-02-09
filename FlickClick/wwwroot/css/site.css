@@ -21,6 +21,7 @@ body{
 
 .layout-header-section-half {
     width: 49%;
+    height: 3vh;
     display: inline-block;
     padding: 0.2vh 0% 0.2vh 0%;
 }
