@@ -1,8 +1,10 @@
 ﻿using FlickClick.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace FlickClick.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private string connectionString = "server=localhost;userid=root;database=steensoft_dk_flickclick;";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -20,6 +23,18 @@ namespace FlickClick.Controllers
 
         public IActionResult Index()
         {
+
+            string query = @"SELECT TOP 6 * FROM movies ORDER BY releaseDate DESC";
+
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            connection.Open();
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+
+            DataTable latestTrailers = new DataTable();
+            latestTrailers.Load(cmd.ExecuteReader());
+
+            ViewData["latestTrailers"] = latestTrailers;
+
             return View();
         }
 
