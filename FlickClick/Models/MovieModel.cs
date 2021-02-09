@@ -12,10 +12,10 @@ namespace FlickClick.Models
         public DateTime releaseDate { get; set; }
         public string description { get; set; }
         public int directorID { get; set; }
-        public DateTime duration { get; set; }
+        public string duration { get; set; }
         public DateTime postDate { get; set; }
         public int ageRating { get; set; }
-        public bool comingSoon { get; set; }
+        public int comingSoon { get; set; }
         public string picturePath { get; set; }
 
 

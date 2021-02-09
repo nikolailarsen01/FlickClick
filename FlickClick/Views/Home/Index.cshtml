@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<FlickClick.Models.MovieModel>
+
+@{
     ViewData["Title"] = "Home Page";
     ViewData["Stylesheet"] = "/css/index.css";
 }
@@ -11,6 +13,6 @@
 
 
         <div class="movie-banners-item">
-            <img src="~/assets/movie-banners/starwarstest.jpeg"/>
+            <img class="movie-banners-item-picture" src="~/assets/movie-banners/starwarstest.jpeg"/>
         </div>
     </div>
