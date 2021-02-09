@@ -4,15 +4,17 @@
     ViewData["Title"] = "Home Page";
     ViewData["Stylesheet"] = "/css/index.css";
 }
-    <div class="movie-banners">
-        <div class="movie-banners-header">
-            <h2>LATESTS TRAILERS</h2>
-            <h2>Show all</h2>
-        </div>
-
-
-
-        <div class="movie-banners-item">
-            <img class="movie-banners-item-picture" src="~/assets/movie-banners/starwarstest.jpeg"/>
+<div class="movie-banners">
+    <div class="movie-banners-header">
+        <p class="movie-banners-header-item">LATESTS TRAILERS</p>
+        <a class="movie-banners-header-item right" href="dinmor.lol">Show all</a>
+    </div>
+    <div class="movie-banners-items">
+        @foreach (var item in Model)
+        {
+            <div class="movie-banners-item">
+                <img class="movie-banners-item-picture" src="@item.picturePath" />
+            </div>
+        }
         </div>
     </div>

@@ -50,8 +50,6 @@ namespace FlickClick.Controllers
                 recentTrailers.Add(mm);
             }
 
-
-
             return View(recentTrailers);
         }
 
