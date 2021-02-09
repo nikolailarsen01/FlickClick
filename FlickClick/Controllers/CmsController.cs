@@ -45,7 +45,7 @@ namespace FlickClick.Controllers
                 mm.duration = dtable.Rows[i]["duration"].ToString();
                 mm.postDate = (DateTime)dtable.Rows[i]["postDate"];
                 mm.ageRating = (int)dtable.Rows[i]["ageRating"];
-                mm.comingSoon = (int)dtable.Rows[i]["ageRating"];
+                mm.comingSoon = (int)dtable.Rows[i]["comingSoon"];
                 mm.picturePath = dtable.Rows[i]["picturePath"].ToString();
                 recentTrailers.Add(mm);
             }
