@@ -17,7 +17,6 @@
 
 .right{
     text-decoration: underline;
-    color: red;
 }
 
 .movie-banners-items {
@@ -35,11 +34,14 @@
 }
 
 .movie-extra {
-    border-bottom: 2px dotted black;
+    border-top: 2px dotted black;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5%;
 }
 
 .movie-extra-halfitem{
-    width: 50%;
+    width: 48%;
 }
 
 .movie-extra-halfitem-header{
@@ -49,4 +51,29 @@
 .movie-extra-halfitem-header-item {
     color: black;
     display: inline-block
+}
+
+.movie-extra-item{
+    margin-bottom: 2.5%;
+}
+
+.movie-extra-item-section{
+    display: flex;
+}
+
+.movie-extra-item-p {
+    margin: 0px;
+}
+
+.movie-extra-item-picture{
+    width:25%;
+}
+
+.movie-extra-item-section-picture {
+    width: 17.5%;
+    padding-right: 1%;
+}
+
+.movie-extra-item-section-p {
+    margin: 0px;
 }
