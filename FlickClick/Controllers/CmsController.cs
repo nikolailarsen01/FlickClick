@@ -1,4 +1,5 @@
-﻿using FlickClick.Models;
+﻿using FlickClick.BL;
+using FlickClick.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -12,8 +13,8 @@ namespace FlickClick.Controllers
 {
     public class CmsController : Controller
     {
-        private string connectionString = "server=localhost;userid=root;database=steensoft_dk_flickclick;";
-
+        DBConnector db = new DBConnector();
+        
         // GET: CmsController
         public ActionResult Index()
         {
@@ -26,14 +27,10 @@ namespace FlickClick.Controllers
             List<MovieModel> recentTrailers = new List<MovieModel>();
 
             string query = @"SELECT * FROM movies ORDER BY releaseDate";
+            db.makeConnection();
+            DataTable dtable = db.sqlSelectQuery(query);
+            db.closeConnection();
 
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            MySqlCommand cmd = new MySqlCommand(query, connection);
-            connection.Open();
-            MySqlDataAdapter dtb = new MySqlDataAdapter();
-            dtb.SelectCommand = cmd;
-            DataTable dtable = new DataTable();
-            dtb.Fill(dtable);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
                 MovieModel mm = new MovieModel();
