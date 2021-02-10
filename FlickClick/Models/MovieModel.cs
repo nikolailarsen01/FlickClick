@@ -15,7 +15,7 @@ namespace FlickClick.Models
         public string duration { get; set; }
         public DateTime postDate { get; set; }
         public int ageRating { get; set; }
-        public int comingSoon { get; set; }
+        public string comingSoon { get; set; }
         public string picturePath { get; set; }
 
 

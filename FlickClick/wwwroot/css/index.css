@@ -17,6 +17,7 @@
 
 .right{
     text-decoration: underline;
+    color: red;
 }
 
 .movie-banners-items {
@@ -35,4 +36,17 @@
 
 .movie-extra {
     border-bottom: 2px dotted black;
+}
+
+.movie-extra-halfitem{
+    width: 50%;
+}
+
+.movie-extra-halfitem-header{
+
+}
+
+.movie-extra-halfitem-header-item {
+    color: black;
+    display: inline-block
 }
