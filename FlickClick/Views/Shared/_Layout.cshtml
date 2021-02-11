@@ -9,58 +9,60 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <div class="layout-header">
-            <img src="~/assets/images/logo.png" />
-            <div class="layout-header-section-half right">
-                <a class="layout-header-section-half-item">HOME</a>
-                <a class="layout-header-section-half-item">NEWS</a>
-                <a class="layout-header-section-half-item">CONTACT</a>
-            </div>
-            <div class="layout-header-section">
-                <div class="layout-header-section-half">
-                    <a class="layout-header-section-half-item">SHOW ALL</a>
-                    <a class="layout-header-section-half-item">LATEST TRAILERS</a>
-                    <a class="layout-header-section-half-item">MOST COMMENTED</a>
-                </div>
+
+
+    <div id="container">
+        <header>
+            <div class="layout-header">
+                <img src="~/assets/images/logo.png" />
                 <div class="layout-header-section-half right">
+                    <a class="layout-header-section-half-item">HOME</a>
+                    <a class="layout-header-section-half-item">NEWS</a>
+                    <a class="layout-header-section-half-item">CONTACT</a>
+                </div>
+                <div class="layout-header-section">
+                    <div class="layout-header-section-half">
+                        <a class="layout-header-section-half-item">SHOW ALL</a>
+                        <a class="layout-header-section-half-item">LATEST TRAILERS</a>
+                        <a class="layout-header-section-half-item">MOST COMMENTED</a>
+                    </div>
+                    <div class="layout-header-section-half right">
+                        <form>
+                            <a>SEARCH</a>
+                            <input type="text" placeholder="Enter search here" />
+                            <input type="submit" value="GO!" />
+                        </form>
+
+                    </div>
+                </div>
+                <div class="layout-header-section-whole right">
                     <form>
-                        <a>SEARCH</a>
-                        <input type="text" placeholder="Enter search here" />
-                        <input type="submit" value="GO!" />
+                        <input type="email" placeholder="Email" />
+                        <input type="password" placeholder="password" />
+                        <input type="submit" value="Sign in" />
+                        &nbsp;
+                        <input type="submit" value="Not a member?" />
                     </form>
 
                 </div>
             </div>
-            <div class="layout-header-section-whole right">
-                <form>
-                    <input type="email" placeholder="Email" />
-                    <input type="password" placeholder="password" />
-                    <input type="submit" value="Sign in" />
-                    &nbsp;
-                    <input type="submit" value="Not a member?" />
-                </form>
-
-            </div>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        <footer class="layout-footer">
+            <a class="layout-footer-item">HOME</a> | <a class="layout-footer-item">NEWS</a> | <a class="layout-footer-item">CONTACT</a>
+            <br />
+            Social media logos here
+            <br />
+            © Flick Click ApS
+        </footer>
     </div>
-
-    <footer class="layout-footer">
-        <a class="layout-footer-item">HOME</a> | <a class="layout-footer-item">NEWS</a> | <a class="layout-footer-item">CONTACT</a>
-        <br />
-        Social media logos here
-        <br />
-        © Flick Click ApS
-
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
 </body>
 </html>

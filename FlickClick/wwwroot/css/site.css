@@ -1,17 +1,24 @@
 ﻿
 .container {
     margin-top: 8% !important;
+    min-height: 100%;
 }
 
-body{
-    height: 100vh;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#container {
+    min-height: 100%;
+    position: relative;
 }
 
 
 .layout-header{
     background: #333333 !important;
     width: 100%;
-    position: absolute;
+    position: fixed;
     color: white;
     top: 0px;
     padding: 1% 0.5% 0% 0.5%;
