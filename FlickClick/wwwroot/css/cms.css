@@ -1,5 +1,9 @@
-﻿body {
+﻿.listForm {
+    border-bottom-width: 2px;
+    border-bottom-color: black;
+    border-bottom-style: solid;
+    margin-bottom: 10px;
 }
-.container {
-    margin-top: 10% !important;
+.row{
+    margin-bottom: 2px;
 }
