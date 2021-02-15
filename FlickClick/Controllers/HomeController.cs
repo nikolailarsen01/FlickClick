@@ -23,19 +23,34 @@ namespace FlickClick.Controllers
 
         public IActionResult Index()
         {
+            List<MovieModel> recentTrailers = new List<MovieModel>();
 
-            string query = @"SELECT TOP 6 * FROM movies ORDER BY releaseDate DESC";
+            string query = @"SELECT * FROM movies ORDER BY releaseDate DESC LIMIT 6";
 
             MySqlConnection connection = new MySqlConnection(connectionString);
-            connection.Open();
             MySqlCommand cmd = new MySqlCommand(query, connection);
+            connection.Open();
+            MySqlDataAdapter dtb = new MySqlDataAdapter();
+            dtb.SelectCommand = cmd;
+            DataTable dtable = new DataTable();
+            dtb.Fill(dtable);
+            for (int i = 0; i < dtable.Rows.Count; i++)
+            {
+                MovieModel mm = new MovieModel();
+                mm.movieID = (int)dtable.Rows[i]["movieId"];
+                mm.title = dtable.Rows[i]["title"].ToString();
+                mm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
+                mm.description = dtable.Rows[i]["description"].ToString();
+                mm.directorID = (int)dtable.Rows[i]["directorID"];
+                mm.duration = dtable.Rows[i]["duration"].ToString();
+                mm.postDate = (DateTime)dtable.Rows[i]["postDate"];
+                mm.ageRating = (int)dtable.Rows[i]["ageRating"];
+                mm.comingSoon = dtable.Rows[i]["comingSoon"].ToString();
+                mm.picturePath = dtable.Rows[i]["picturePath"].ToString();
+                recentTrailers.Add(mm);
+            }
 
-            DataTable latestTrailers = new DataTable();
-            latestTrailers.Load(cmd.ExecuteReader());
-
-            ViewData["latestTrailers"] = latestTrailers;
-
-            return View();
+            return View(recentTrailers);
         }
 
         public IActionResult Privacy()

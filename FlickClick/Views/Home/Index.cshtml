@@ -1,16 +1,96 @@
-﻿@{
+﻿@model IEnumerable<FlickClick.Models.MovieModel>
+
+@{
     ViewData["Title"] = "Home Page";
     ViewData["Stylesheet"] = "/css/index.css";
 }
-    <div class="movie-banners">
-        <div class="movie-banners-header">
-            <h2>LATESTS TRAILERS</h2>
-            <h2>Show all</h2>
-        </div>
-
-
-
-        <div class="movie-banners-item">
-            <img src="~/assets/movie-banners/starwarstest.jpeg"/>
-        </div>
+<div class="movie-banners">
+    <div class="movie-banners-header">
+        <p class="movie-banners-header-item">LATESTS TRAILERS</p>
+        <a class="movie-banners-header-item right ul" href="dinmor.lol">Show all</a>
     </div>
+    <div class="movie-banners-items">
+        @foreach (var item in Model)
+        {
+            <div class="movie-banners-item">
+                <img class="movie-banners-item-picture" src="@item.picturePath" />
+            </div>
+        }
+    </div>
+</div>
+
+<div class="movie-banners">
+    <div class="movie-banners-header">
+        <p class="movie-banners-header-item">MOST COMMENTED</p>
+        <a class="movie-banners-header-item right ul" href="dinmor.lol">Show all</a>
+    </div>
+    <div class="movie-banners-items">
+        @foreach (var item in Model)
+        {
+            <div class="movie-banners-item">
+                <img class="movie-banners-item-picture" src="@item.picturePath" />
+            </div>
+        }
+    </div>
+</div>
+
+<div class="movie-extra">
+    <div class="movie-extra-halfitem">
+        <div class="movie-extra-halfitem-header">
+            <p class="movie-extra-halfitem-header-item">NEWS</p>
+            <a class="movie-extra-halfitem-header-item right ul" href="dinmor.lol">Show all</a>
+        </div>
+        <div class="movie-extra-item">
+            <small>11.09.18</small>
+            <h6>Title</h6>
+            <p class="movie-extra-item-p">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+            </p>
+            <a class="ul" href="Extraidk.idk">Read more</a>
+        </div>
+        <div class="movie-extra-item">
+            <small>11.09.18</small>
+            <h6>Title</h6>
+            <p class="movie-extra-item-p">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+            </p>
+            <a class="ul" href="Extraidk.idk">Read more</a>
+        </div>
+
+    </div>
+    <div class="movie-extra-halfitem">
+        <div class="movie-extra-halfitem-header">
+            <p class="movie-extra-halfitem-header-item">COMING SOON!</p>
+            <a class="movie-extra-halfitem-header-item right ul" href="dinmor.lol">Show all</a>
+        </div>
+
+        <div class="movie-extra-item">
+            <small>11.09.18</small>
+            <h6>Movie Title</h6>
+            <div class="movie-extra-item-section">
+                <img class="movie-extra-item-section-picture" src="~/assets/movie-banners/starwarstest.jpeg" />
+                <div>
+                    <p class="movie-extra-item-section-p">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    </p>
+                    <a class="ul" href="Extraidk.idk">Read more</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-extra-item">
+            <small>11.09.18</small>
+            <h6>Movie Title</h6>
+            <div class="movie-extra-item-section">
+                <img class="movie-extra-item-section-picture" src="~/assets/movie-banners/starwarstest.jpeg" />
+                <div>
+                    <p class="movie-extra-item-section-p">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    </p>
+                    <a class="ul" href="Extraidk.idk">Read more</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

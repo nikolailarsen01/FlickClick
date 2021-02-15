@@ -1,0 +1,86 @@
+﻿@model IEnumerable<FlickClick.BL.MovieItem>
+
+@{
+    ViewData["Title"] = "Details";
+    ViewData["Stylesheet"] = "/css/cms.css";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>MovieModel</h4>
+    <hr />
+    @foreach (var item in Model)
+    {
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.movieID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.movieID)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.releaseDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.releaseDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.directorID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.directorID)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.duration)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.duration)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.postDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.postDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.ageRating)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.ageRating)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.comingSoon)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.comingSoon)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.picturePath)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.picturePath)
+            </dd>
+        </dl>
+        <form class="listForm" action="Edit/@item.movieID" method="get">
+            <input type="hidden" name="movieEditID" value="@item.movieID">
+            <input type="submit" name="submit" value="Rediger">
+        </form>
+    }
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
