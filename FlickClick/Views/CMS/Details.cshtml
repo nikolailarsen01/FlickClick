@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FlickClick.Models.MovieModel>
+﻿@model IEnumerable<FlickClick.BL.MovieItem>
 
 @{
     ViewData["Title"] = "Details";
@@ -74,7 +74,7 @@
                 @Html.DisplayFor(model => item.picturePath)
             </dd>
         </dl>
-        <form class="listForm" action="Edit/@item.movieID" method="post">
+        <form class="listForm" action="Edit/@item.movieID" method="get">
             <input type="hidden" name="movieEditID" value="@item.movieID">
             <input type="submit" name="submit" value="Rediger">
         </form>

@@ -1,12 +1,11 @@
-﻿using FlickClick.BL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FlickClick.Models
+namespace FlickClick.BL
 {
-    public class MovieModel : IMovieItem
+    public class MovieItem : IMovieItem
     {
         public int movieID { get; set; }
         public string title { get; set; }
