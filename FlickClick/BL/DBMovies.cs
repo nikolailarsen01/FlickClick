@@ -1,17 +1,18 @@
-﻿using System;
+﻿using FlickClick.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace FlickClick.BL
+namespace FlickClick
 {
-    public class DBMovies : MovieItem
+    public class DBMovies
     {
-        public MovieItem getMovie(DBConnector db, int id)
+        public MovieModel getMovie(DBConnector db, int id)
         {
             string query = $"SELECT * FROM movies WHERE movieID='{id}'";
             DataTable dtable = db.sqlSelectQuery(query);
-            MovieItem mm = new MovieItem();
+            MovieModel mm = new MovieModel();
             mm.movieID = (int)dtable.Rows[0]["movieId"];
             mm.title = dtable.Rows[0]["title"].ToString();
             mm.releaseDate = (DateTime)dtable.Rows[0]["releaseDate"];
@@ -24,14 +25,14 @@ namespace FlickClick.BL
             mm.picturePath = dtable.Rows[0]["picturePath"].ToString();
             return mm;
         }
-        public List<MovieItem> getMovies(DBConnector db)
+        public List<MovieModel> getMovies(DBConnector db)
         {
             string query = "SELECT * FROM movies";
-            List<MovieItem> movies = new List<MovieItem>();
+            List<MovieModel> movies = new List<MovieModel>();
             DataTable dtable = db.sqlSelectQuery(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
-                MovieItem mm = new MovieItem();
+                MovieModel mm = new MovieModel();
                 mm.movieID = (int)dtable.Rows[i]["movieId"];
                 mm.title = dtable.Rows[i]["title"].ToString();
                 mm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
@@ -46,7 +47,7 @@ namespace FlickClick.BL
             }
             return movies;
         }
-        public void update(DBConnector db, MovieItem movie)
+        public void update(DBConnector db, MovieModel movie)
         {
             string query = $"UPDATE movies SET title='{movie.title}', releaseDate='{movie.releaseDate.ToString("yyyy-MM-dd")}', description='{movie.description}', directorID={movie.directorID}" +
                 $", duration='{movie.duration}', postDate='{movie.postDate.ToString("yyyy-MM-dd HH:mm:ss")}', ageRating={movie.ageRating}, comingSoon={movie.comingSoon}, picturePath='{movie.picturePath}' " +

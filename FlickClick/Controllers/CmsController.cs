@@ -1,5 +1,4 @@
-﻿using FlickClick.BL;
-using FlickClick.Models;
+﻿using FlickClick.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -16,11 +15,11 @@ namespace FlickClick.Controllers
     {
         DBConnector db = new DBConnector();
         DBMovies dbMovie = new DBMovies();
+        DBDirectors dbDirectors = new DBDirectors();
 
         // GET: CmsController
         public ActionResult Index()
         {
-            db.makeConnection();
             return View();
         }
 
@@ -28,7 +27,7 @@ namespace FlickClick.Controllers
         public ActionResult Details(int id)
         {
             db.makeConnection();
-            List<MovieItem> movies = dbMovie.getMovies(db);
+            List<MovieModel> movies = dbMovie.getMovies(db);
             return View(movies);
         }
 
@@ -59,14 +58,18 @@ namespace FlickClick.Controllers
         public ActionResult Edit(int id)
         {
             db.makeConnection();
-            MovieItem mm = dbMovie.getMovie(db, id);
-            return View(mm);
+            MovieDirectorModel mdModel = new MovieDirectorModel();
+            MovieModel mm = dbMovie.getMovie(db, id);
+            mdModel.MovieModel = mm;
+            List<DirectorModel> directors = dbDirectors.getDirectors(db);
+            mdModel.DirectorsModel = directors;
+            return View(mdModel);
         }
 
         // POST: CmsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(MovieItem movie, int id)
+        public ActionResult Edit(MovieDirectorModel mdModel, int id)
         {
             /* try
              {
@@ -76,10 +79,9 @@ namespace FlickClick.Controllers
              {*/
             //  }
             db.makeConnection();
-            movie.movieID = id;
-            dbMovie.updateMovie(db, movie);
-            return RedirectToAction("Index");
-
+            mdModel.MovieModel.movieID = id;
+            dbMovie.update(db, mdModel.MovieModel);
+            return RedirectToAction("Details");
         }
 
         // GET: CmsController/Delete/5
