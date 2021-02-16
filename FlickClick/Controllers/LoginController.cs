@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,79 +11,53 @@ namespace FlickClick.Controllers
 {
     public class LoginController : Controller
     {
-        // GET: LoginController
-        public ActionResult Index()
+        private string connectionString = "server=localhost;userid=root;database=steensoft_dk_flickclick;";
+
+        public ActionResult Index() 
         {
+
+            ViewBag.userID = HttpContext.Session.GetInt32("userID");
+
+
             return View();
         }
 
-        // GET: LoginController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: LoginController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: LoginController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult ValidateLogin()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            string email = HttpContext.Request.Form["email"];
+            string password = HttpContext.Request.Form["password"];
 
-        // GET: LoginController/Edit/5
-        public ActionResult Edit(int id)
-        {
+            string query = "SELECT * FROM emailusers WHERE email='" + email + "'";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+            connection.Open();
+            MySqlDataAdapter dtb = new MySqlDataAdapter();
+            dtb.SelectCommand = cmd;
+            DataTable dtable = new DataTable();
+            dtb.Fill(dtable);
+            if (dtable.Rows.Count > 0)
+            {
+                int userID = (int)dtable.Rows[0]["userID"];
+
+                query = "SELECT userID, firstname.firstName FROM users INNER JOIN firstname ON users.userID = firstname.firstNameID WHERE userID=" + userID + " AND Password=" + password;
+                cmd = new MySqlCommand(query, connection);
+                dtb = new MySqlDataAdapter();
+                dtb.SelectCommand = cmd;
+                dtable = new DataTable();
+                dtb.Fill(dtable);
+                if (dtable.Rows.Count > 0)
+                {
+                    HttpContext.Session.SetInt32("userID", userID);
+                    HttpContext.Session.SetString("firstName", dtable.Rows[0]["firstName"].ToString());
+                }
+            }
+
+            ViewBag.userID = HttpContext.Session.GetInt32("userID");
+
+            connection.Close();
+
             return View();
-        }
-
-        // POST: LoginController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: LoginController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: LoginController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
