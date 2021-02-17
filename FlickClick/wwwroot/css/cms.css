@@ -7,3 +7,9 @@
 .row{
     margin-bottom: 2px;
 }
+.hrefLink{
+    font-size: 14px;
+}
+.contentContainter{
+    margin-bottom: 5%; 
+}

@@ -1,22 +1,14 @@
-﻿using FlickClick.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-
 
 namespace FlickClick.Controllers
 {
     public class CmsController : Controller
     {
-        DBConnector db = new DBConnector();
-        DBMovies dbMovie = new DBMovies();
-        DBDirectors dbDirectors = new DBDirectors();
-
         // GET: CmsController
         public ActionResult Index()
         {
@@ -26,9 +18,7 @@ namespace FlickClick.Controllers
         // GET: CmsController/Details/5
         public ActionResult Details(int id)
         {
-            db.makeConnection();
-            List<MovieModel> movies = dbMovie.getMovies(db);
-            return View(movies);
+            return View();
         }
 
         // GET: CmsController/Create
@@ -36,8 +26,6 @@ namespace FlickClick.Controllers
         {
             return View();
         }
-
-
 
         // POST: CmsController/Create
         [HttpPost]
@@ -57,31 +45,22 @@ namespace FlickClick.Controllers
         // GET: CmsController/Edit/5
         public ActionResult Edit(int id)
         {
-            db.makeConnection();
-            MovieDirectorModel mdModel = new MovieDirectorModel();
-            MovieModel mm = dbMovie.getMovie(db, id);
-            mdModel.MovieModel = mm;
-            List<DirectorModel> directors = dbDirectors.getDirectors(db);
-            mdModel.DirectorsModel = directors;
-            return View(mdModel);
+            return View();
         }
 
         // POST: CmsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(MovieDirectorModel mdModel, int id)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
-            /* try
-             {
-                 return RedirectToAction(nameof(Index));
-             }
-             catch
-             {*/
-            //  }
-            db.makeConnection();
-            mdModel.MovieModel.movieID = id;
-            dbMovie.update(db, mdModel.MovieModel);
-            return RedirectToAction("Details");
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: CmsController/Delete/5

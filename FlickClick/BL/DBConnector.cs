@@ -30,7 +30,7 @@ namespace FlickClick
 
             return dtable;
         }
-        public void sqlUpdateQuery(string query)
+        public void sqlUpdateOrAddQuery(string query)
         {
             MySqlCommand cmd = new MySqlCommand(query, connection);
             cmd.Prepare();
