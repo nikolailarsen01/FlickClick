@@ -59,5 +59,18 @@ namespace FlickClick.Controllers
 
             return View();
         }
+
+        public ActionResult Register()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ValidateRegister()
+        {
+
+            return View();
+        }
     }
 }
