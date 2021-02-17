@@ -52,7 +52,11 @@ namespace FlickClick
             string query = $"UPDATE movies SET title='{movie.title}', releaseDate='{movie.releaseDate.ToString("yyyy-MM-dd")}', description='{movie.description}', directorID={movie.directorID}" +
                 $", duration='{movie.duration}', postDate='{movie.postDate.ToString("yyyy-MM-dd HH:mm:ss")}', ageRating={movie.ageRating}, comingSoon={movie.comingSoon}, picturePath='{movie.picturePath}' " +
                 $"WHERE movieID={movie.movieID}";
-            db.sqlUpdateQuery(query);
+            db.sqlUpdateOrAddQuery(query);
+        }
+        public void add(DBConnector db, MovieModel movie)
+        {
+            string query = "";
         }
     }
 }
