@@ -15,7 +15,7 @@
     <div id="container">
         <header>
             <div class="layout-header">
-                <img src="~/assets/images/logo.png" />
+                <img onclick="HomePage();" style="cursor: pointer;" src="~/assets/images/logo.png" />
                 <div class="layout-header-section-half right">
                     <a class="layout-header-section-half-item">HOME</a>
                     <a class="layout-header-section-half-item">NEWS</a>
@@ -39,9 +39,8 @@
                 <div class="layout-header-section-whole right">
                     @if (@HttpContextAccessor.HttpContext.Session.GetInt32("userID") > 0)
                     {
-                        <a style="margin-right: 5px;" href="Home/UserPage">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>
-                        
-                        <a href="Login/Logout">Log ud</a>
+                        <a class="mg" href="Home/UserPage">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>                        
+                        <a class="mg" href="Login/Logout">Log ud</a>
                     }
                     else
                     {
@@ -50,7 +49,7 @@
                             <input name="password" type="password" placeholder="password" />
                             <input type="submit" value="Sign in" />
                         </form>
-                            <a href="Login/Register">Not a member?</a>
+                            <a class="mg" href="Login/Register">Not a member?</a>
                         
                     }
                 </div>

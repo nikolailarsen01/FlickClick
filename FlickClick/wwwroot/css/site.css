@@ -89,3 +89,8 @@ input[type="text"], input[type="email"], input[type="password"] {
     text-decoration: underline;
     color: red;
 }
+
+.mg{
+    margin-left: 5px;
+    margin-right: 5px;
+}
