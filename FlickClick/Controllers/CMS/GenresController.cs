@@ -5,29 +5,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FlickClick.Controllers
+namespace FlickClick.Controllers.CMS
 {
-    public class CmsController : Controller
+    public class GenresController : Controller
     {
-        // GET: CmsController
+        // GET: GenresController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: CmsController/Details/5
+        // GET: GenresController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: CmsController/Create
+        // GET: GenresController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: CmsController/Create
+        // POST: GenresController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -42,13 +42,13 @@ namespace FlickClick.Controllers
             }
         }
 
-        // GET: CmsController/Edit/5
+        // GET: GenresController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: CmsController/Edit/5
+        // POST: GenresController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -63,13 +63,13 @@ namespace FlickClick.Controllers
             }
         }
 
-        // GET: CmsController/Delete/5
+        // GET: GenresController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: CmsController/Delete/5
+        // POST: GenresController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

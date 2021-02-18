@@ -1,6 +1,6 @@
 ﻿
 .container {
-    padding-top: 8% !important;
+    margin-top: 180px !important;
     min-height: 100%;
 }
 
@@ -88,4 +88,9 @@ input[type="text"], input[type="email"], input[type="password"] {
 .ul{
     text-decoration: underline;
     color: red;
+}
+
+.mg{
+    margin-left: 5px;
+    margin-right: 5px;
 }

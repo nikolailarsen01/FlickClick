@@ -7,3 +7,15 @@
 .row{
     margin-bottom: 2px;
 }
+.sideLink{
+    font-size: 14px;
+}
+.sideLinks {
+    font-size: 14px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    display: flex;
+}
+.contentContainter{
+    margin-bottom: 10%; 
+}

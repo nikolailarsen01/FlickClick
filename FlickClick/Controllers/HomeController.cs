@@ -1,4 +1,5 @@
 ﻿using FlickClick.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
@@ -55,6 +56,8 @@ namespace FlickClick.Controllers
 
         public IActionResult Privacy()
         {
+            
+
             return View();
         }
 

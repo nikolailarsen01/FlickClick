@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,12 +12,10 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-
-
     <div id="container">
         <header>
             <div class="layout-header">
-                <img src="~/assets/images/logo.png" />
+                <img onclick="HomePage();" style="cursor: pointer;" src="~/assets/images/logo.png" />
                 <div class="layout-header-section-half right">
                     <a class="layout-header-section-half-item">HOME</a>
                     <a class="layout-header-section-half-item">NEWS</a>
@@ -36,14 +37,21 @@
                     </div>
                 </div>
                 <div class="layout-header-section-whole right">
-                    <form>
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="password" />
-                        <input type="submit" value="Sign in" />
-                        &nbsp;
-                        <input type="submit" value="Not a member?" />
-                    </form>
-
+                    @if (@HttpContextAccessor.HttpContext.Session.GetInt32("userID") > 0)
+                    {
+                        <a class="mg" href="Home/UserPage">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>                        
+                        <a class="mg" href="Login/Logout">Log ud</a>
+                    }
+                    else
+                    {
+                        <form method="post" action="/Login/ValidateLogin">
+                            <input name="email" type="email" placeholder="Email" />
+                            <input name="password" type="password" placeholder="password" />
+                            <input type="submit" value="Sign in" />
+                        </form>
+                            <a class="mg" href="Login/Register">Not a member?</a>
+                        
+                    }
                 </div>
             </div>
         </header>
@@ -60,9 +68,9 @@
             © Flick Click ApS
         </footer>
     </div>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        @RenderSection("Scripts", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
