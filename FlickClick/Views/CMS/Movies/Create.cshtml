@@ -1,77 +1,95 @@
-﻿@model FlickClick.Models.MovieModel
+﻿@model FlickClick.Models.MovieDirectorModel
 
 @{
     ViewData["Title"] = "CreateMovie";
+    ViewData["Stylesheet"] = "/css/cms.css";
+}
+@{
+    List<string> ageLimit = new List<string>();
+    ageLimit.Add("Alle aldre");
+    ageLimit.Add("7");
+    ageLimit.Add("11");
+    ageLimit.Add("15");
+    int[] ageLimitNumbers = { 0, 7, 11, 15 };
+
 }
 
 <h1>CreateMovie</h1>
 
 <h4>MovieModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateMovie">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="movieID" class="control-label"></label>
-                <input asp-for="movieID" class="form-control" />
-                <span asp-validation-for="movieID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="title" class="control-label"></label>
-                <input asp-for="title" class="form-control" />
-                <span asp-validation-for="title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="releaseDate" class="control-label"></label>
-                <input asp-for="releaseDate" class="form-control" />
-                <span asp-validation-for="releaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="description" class="control-label"></label>
-                <input asp-for="description" class="form-control" />
-                <span asp-validation-for="description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="directorID" class="control-label"></label>
-                <input asp-for="directorID" class="form-control" />
-                <span asp-validation-for="directorID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="duration" class="control-label"></label>
-                <input asp-for="duration" class="form-control" />
-                <span asp-validation-for="duration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="postDate" class="control-label"></label>
-                <input asp-for="postDate" class="form-control" />
-                <span asp-validation-for="postDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ageRating" class="control-label"></label>
-                <input asp-for="ageRating" class="form-control" />
-                <span asp-validation-for="ageRating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="comingSoon" class="control-label"></label>
-                <input asp-for="comingSoon" class="form-control" />
-                <span asp-validation-for="comingSoon" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="picturePath" class="control-label"></label>
-                <input asp-for="picturePath" class="form-control" />
-                <span asp-validation-for="picturePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="contentContainter">
+    <div class="row">
+        <div class="col-md-4">
+            @Html.AntiForgeryToken()
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.title" class="control-label"></label>
+                    <input asp-for="MovieModel.title" type="text" class="form-control" required />
+                    <span asp-validation-for="MovieModel.title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.releaseDate" class="control-label"></label>
+                    <input asp-for="MovieModel.releaseDate" type="date" class="form-control" required />
+                    <span asp-validation-for="MovieModel.releaseDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.description" class="control-label"></label>
+                    <textarea placeholder="Beskrivelse" asp-for="MovieModel.description" type="text" class="form-control" required>
+                    </textarea>
+                    <span asp-validation-for="MovieModel.description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.directorID" class="control-label"></label>
+                    <select list="directors" name="MovieModel.directorID" id="director" class="form-control" required>
+                        @foreach (var item in Model.DirectorsModel)
+                        {
+                            <option value="@item.directorID">@item.directorID - @item.firstName @item.lastName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="MovieModel.directorID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.duration" class="control-label"></label>
+                    <input asp-for="MovieModel.duration" type="time" class="form-control" required />
+                    <span asp-validation-for="MovieModel.duration" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.ageRating" class="control-label"></label>
+                    <select list="ageRatings" name="MovieModel.ageRating" class="form-control" required>
+                        @foreach (string age in ageLimit)
+                        {
+                            <option value="@ageLimitNumbers[ageLimit.IndexOf(age)]">@age</option>
+                        }
+                    </select>
+                    <span asp-validation-for="MovieModel.ageRating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.comingSoon" class="control-label"></label>
+                    <select list="truefalse" name="MovieModel.comingSoon" class="form-control" required>
+                        <option value="True">Ikke udgivet</option>
+                        <option value="False">Udgivet</option>
+                    </select>
+                    <span asp-validation-for="MovieModel.comingSoon" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.picturePath" class="control-label"></label>
+                    <input asp-for="MovieModel.picturePath" class="form-control" required />
+                    <span asp-validation-for="MovieModel.picturePath" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index">Back to movie section</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

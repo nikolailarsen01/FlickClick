@@ -1,4 +1,5 @@
 ﻿using FlickClick.Models;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +12,7 @@ namespace FlickClick
         public MovieModel getMovie(DBConnector db, int id)
         {
             string query = $"SELECT * FROM movies WHERE movieID='{id}'";
-            DataTable dtable = db.sqlSelectQuery(query);
+            DataTable dtable = db.sqlSelectQueryOld(query);
             MovieModel mm = new MovieModel();
             mm.movieID = (int)dtable.Rows[0]["movieId"];
             mm.title = dtable.Rows[0]["title"].ToString();
@@ -29,7 +30,7 @@ namespace FlickClick
         {
             string query = "SELECT * FROM movies";
             List<MovieModel> movies = new List<MovieModel>();
-            DataTable dtable = db.sqlSelectQuery(query);
+            DataTable dtable = db.sqlSelectQueryOld(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
                 MovieModel mm = new MovieModel();
@@ -49,14 +50,46 @@ namespace FlickClick
         }
         public void update(DBConnector db, MovieModel movie)
         {
-            string query = $"UPDATE movies SET title='{movie.title}', releaseDate='{movie.releaseDate.ToString("yyyy-MM-dd")}', description='{movie.description}', directorID={movie.directorID}" +
-                $", duration='{movie.duration}', postDate='{movie.postDate.ToString("yyyy-MM-dd HH:mm:ss")}', ageRating={movie.ageRating}, comingSoon={movie.comingSoon}, picturePath='{movie.picturePath}' " +
-                $"WHERE movieID={movie.movieID}";
-            db.sqlUpdateOrAddQuery(query);
+            string query = "UPDATE `movies` SET title=@title, releaseDate=@releaseDate, description=@description, directorID=@directorID, duration=@duration, postDate=@postDate, comingSoon=@comingSoon, picturePath=@picturePath WHERE movieID=@movieID";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@title", movie.title);
+            cmd.Parameters.AddWithValue("@releaseDate", movie.releaseDate.ToString("yyyy-MM-dd"));
+            cmd.Parameters.AddWithValue("@description", movie.description);
+            cmd.Parameters.AddWithValue("@directorID", movie.directorID);
+            cmd.Parameters.AddWithValue("@duration", movie.duration);
+            cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
+            cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
+            cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);
+            cmd.Parameters.AddWithValue("@movieID", movie.movieID);
+            db.sqlUpdateOrAddQuery(cmd);
         }
         public void add(DBConnector db, MovieModel movie)
         {
-            string query = "";
+            movie.postDate = DateTime.Now;
+            string query = "INSERT INTO `movies` (`title`, `releaseDate`, `description`, `directorID`, `duration`, `postDate`, `ageRating`, `comingSoon`, `picturePath`) " +
+                "VALUES (@title, @releaseDate, @description, @directorID, @duration, @postDate, @ageRating, @comingSoon, @picturePath)";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@title", movie.title);
+            cmd.Parameters.AddWithValue("@releaseDate", movie.releaseDate.ToString("yyyy-MM-dd"));
+            cmd.Parameters.AddWithValue("@description", movie.description);
+            cmd.Parameters.AddWithValue("@directorID", movie.directorID);
+            cmd.Parameters.AddWithValue("@duration", movie.duration);
+            cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
+            cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
+            cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);
+            db.sqlUpdateOrAddQuery(cmd);
+        }
+        public  void delete(DBConnector db, int id)
+        {
+            string query = "DELETE FROM `movies` WHERE movieID=@movieID";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@movieID", id);
+            db.sqlDeleteQuery(cmd);
         }
     }
 }
