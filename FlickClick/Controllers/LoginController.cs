@@ -80,7 +80,11 @@ namespace FlickClick.Controllers
 
             int postalCodeID = 0;
             int streetNameID = 0;
-            int adressID = 0;
+
+            int addressID = 0;
+            int firstNameID = 0;
+            int lastNameID = 0;
+
             //postalCode
             string query = "SELECT * FROM citycodes WHERE PostalCode='"+postalCode+"'";
             MySqlConnection connection = new MySqlConnection(connectionString);
@@ -98,7 +102,8 @@ namespace FlickClick.Controllers
             {
                 query = "INSERT INTO `citycodes`(`PostalCode`) VALUES ('"+postalCode+"')";
                 cmd = new MySqlCommand(query, connection);
-                postalCodeID = cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+                postalCodeID = Convert.ToInt32(cmd.LastInsertedId);
             }
 
             //streetName
@@ -118,10 +123,11 @@ namespace FlickClick.Controllers
             {
                 query = "INSERT INTO `streetnames`(`streetName`) VALUES ('" + streetName + "')";
                 cmd = new MySqlCommand(query, connection);
-                streetNameID = cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+                streetNameID = Convert.ToInt32(cmd.LastInsertedId);
             }
 
-            //Adress
+            //Address
             query = "SELECT * FROM addressjunction WHERE cityID='" + postalCodeID + "' AND streetID='" + streetNameID + "' AND houseNumber='" + houseNumber + "'";
             connection = new MySqlConnection(connectionString);
             cmd = new MySqlCommand(query, connection);
@@ -132,17 +138,99 @@ namespace FlickClick.Controllers
             dtb.Fill(dtable);
             if (dtable.Rows.Count > 0)
             {
-                adressID = (int)dtable.Rows[0]["ID"];
+                addressID = (int)dtable.Rows[0]["ID"];
             }
             else
             {
                 query = "INSERT INTO `addressjunction`(`cityID`, `streetID`, `houseNumber`) VALUES ('"+postalCodeID+ "','" + streetNameID + "','" + houseNumber + "')";
                 cmd = new MySqlCommand(query, connection);
-                streetNameID = cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+                addressID = Convert.ToInt32(cmd.LastInsertedId);
+                
             }
 
+            //firstName
+            query = "SELECT * FROM firstnames WHERE firstName='" + firstName + "'";
+            connection = new MySqlConnection(connectionString);
+            cmd = new MySqlCommand(query, connection);
+            connection.Open();
+            dtb = new MySqlDataAdapter();
+            dtb.SelectCommand = cmd;
+            dtable = new DataTable();
+            dtb.Fill(dtable);
+            if (dtable.Rows.Count > 0)
+            {
+                firstNameID = (int)dtable.Rows[0]["ID"];
+            }
+            else
+            {
+                query = "INSERT INTO `firstnames`(`firstName`) VALUES ('" + firstName + "')";
+                cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+                firstNameID = Convert.ToInt32(cmd.LastInsertedId);
+            }
+
+            //lastName
+            query = "SELECT * FROM lastnames WHERE lastName='" + lastName + "'";
+            connection = new MySqlConnection(connectionString);
+            cmd = new MySqlCommand(query, connection);
+            connection.Open();
+            dtb = new MySqlDataAdapter();
+            dtb.SelectCommand = cmd;
+            dtable = new DataTable();
+            dtb.Fill(dtable);
+            if (dtable.Rows.Count > 0)
+            {
+                lastNameID = (int)dtable.Rows[0]["ID"];
+            }
+            else
+            {
+                query = "INSERT INTO `lastnames`(`lastName`) VALUES ('" + lastName + "')";
+                cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+                lastNameID = Convert.ToInt32(cmd.LastInsertedId);
+            }
+
+            /*
+            //user
+            query = "SELECT `firstNameID`, `lastNameID`, `addressID`, `phoneNumber`, FROM `users` " +
+                "WHERE firstNameID='"+firstNameID+ "' AND lastNameID='" + lastNameID + "' AND addressID='" + addressID + "' AND password='" + lastNameID + "'";
+            connection = new MySqlConnection(connectionString);
+            cmd = new MySqlCommand(query, connection);
+            connection.Open();
+            dtb = new MySqlDataAdapter();
+            dtb.SelectCommand = cmd;
+            dtable = new DataTable();
+            dtb.Fill(dtable);
+            if (dtable.Rows.Count > 0)
+            {
+                lastNameID = (int)dtable.Rows[0]["ID"];
+            }
+            else
+            {
+                query = "INSERT INTO `lastnames`(`lastName`) VALUES ('" + lastName + "')";
+                cmd = new MySqlCommand(query, connection);
+                lastNameID = (int)cmd.ExecuteScalar();
+            }*/
+
+            //user insert
+            query = "INSERT INTO `users`(`firstNameID`, `lastNameID`, `addressID`, `password`, `phoneNumber`, `userSince`)" +
+                " VALUES ('" + firstNameID + "','" + lastNameID + "','" + addressID + "','" + password + "','" + phoneNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "')";
+            connection = new MySqlConnection(connectionString);
+            cmd = new MySqlCommand(query, connection);
+            connection.Open();
+            cmd.ExecuteNonQuery();
+            int userID = Convert.ToInt32(cmd.LastInsertedId);
+
+            query = "INSERT INTO `emailusers` (`userID`, `email`) VALUES ('" + userID + "','" + email + "')";
+            connection = new MySqlConnection(connectionString);
+            cmd = new MySqlCommand(query, connection);
+            connection.Open();
+            cmd.ExecuteNonQuery();
 
 
+
+            connection.Close();
 
             return View();
         }

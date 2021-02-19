@@ -11,9 +11,17 @@
     <div class="movie-banners-items">
         @foreach (var item in Model)
         {
-            <div class="movie-banners-item">
-                <img class="movie-banners-item-picture" src="@item.picturePath" />
-            </div>
+        <div class="content">
+            <a href="https://unsplash.com/photos/HkTMcmlMOUQ" target="_blank">
+                <div class="content-overlay"></div>
+                <img class="content-image" src="@item.picturePath">
+                <div class="content-details fadeIn-bottom">
+                    <h3 class="content-title">Play Trailer</h3>
+                    <img class="play-button" src="https://i.imgur.com/vXXQugU.png" />
+                    <p class="content-text">Star wars</p>
+                </div>
+            </a>
+        </div>
         }
     </div>
 </div>
