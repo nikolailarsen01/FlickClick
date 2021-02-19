@@ -10,17 +10,17 @@ namespace FlickClick
         private MySqlConnection connection;
         public DBConnector()
         {
-            connectionString = "server=localhost;userid=root;database=steensoft_dk_flickclick;";
+            connectionString = "server=localhost;userid=normal;password=Normal123;database=steensoft_dk_flickclick;";
+            connection = new MySqlConnection(connectionString);
+            connection.Open();
         }
         ~DBConnector() { }
 
         public bool makeConnection()
         {
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
             return connection.Ping();
         }
-        public DataTable sqlSelectQuery(string query)
+        public DataTable sqlSelectQueryOld(string query)
         {
             MySqlCommand command = new MySqlCommand(query, connection);
             MySqlDataAdapter dtb = new MySqlDataAdapter();
@@ -30,9 +30,24 @@ namespace FlickClick
 
             return dtable;
         }
-        public void sqlUpdateOrAddQuery(string query)
+        public DataTable SqlSelectQuery(MySqlCommand cmd)
         {
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            cmd.Connection = connection;
+            MySqlDataAdapter dap = new MySqlDataAdapter();
+            dap.SelectCommand = cmd;
+            DataTable dtb = new DataTable();
+            dap.Fill(dtb);
+            return dtb;
+        }
+        public void sqlUpdateOrAddQuery(MySqlCommand cmd)
+        {
+            cmd.Connection = connection;
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+        }
+        public void sqlDeleteQuery(MySqlCommand cmd)
+        {
+            cmd.Connection = connection;
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }

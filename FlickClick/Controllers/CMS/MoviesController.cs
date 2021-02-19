@@ -34,24 +34,21 @@ namespace FlickClick.Controllers.CMS
         // GET: CmsController/Create
         public ActionResult Create()
         {
-            return View("~/Views/CMS/Movies/Create.cshtml");
+            db.makeConnection();
+            MovieDirectorModel mdModel = new MovieDirectorModel();
+            List<DirectorModel> directors = dbDirectors.getDirectors(db);
+            mdModel.DirectorsModel = directors;
+            return View("~/Views/CMS/Movies/Create.cshtml", mdModel);
         }
-
-
 
         // POST: CmsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(MovieDirectorModel mdModel, int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View("~/Views/CMS/Movies/Create.cshtml");
-            }
+            db.makeConnection();
+            dbMovie.add(db, mdModel.MovieModel);
+            return RedirectToAction("Index");
         }
 
         // GET: CmsController/Edit/5
@@ -87,7 +84,9 @@ namespace FlickClick.Controllers.CMS
         // GET: CmsController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            db.makeConnection();
+            MovieModel mm = dbMovie.getMovie(db, id);
+            return View("~/Views/CMS/Movies/Delete.cshtml", mm);
         }
 
         // POST: CmsController/Delete/5
@@ -95,14 +94,9 @@ namespace FlickClick.Controllers.CMS
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            db.makeConnection();
+            dbMovie.delete(db, id);
+            return RedirectToAction("Index");
         }
     }
 }
