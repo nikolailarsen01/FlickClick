@@ -13,7 +13,6 @@ namespace FlickClick.Controllers.CMS
         DBConnector db = new DBConnector();
         DBDirectors dbDirectors = new DBDirectors();
 
-
         // GET: HomeController
         public ActionResult Index()
         {

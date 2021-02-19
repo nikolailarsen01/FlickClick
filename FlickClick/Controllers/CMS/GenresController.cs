@@ -4,20 +4,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlickClick.BL;
+using FlickClick.Models;
 
 namespace FlickClick.Controllers.CMS
 {
     public class GenresController : Controller
     {
+        DBConnector db = new DBConnector();
+        DBGenres dbGenres = new DBGenres();
+
         // GET: GenresController
         public ActionResult Index()
         {
-            return View();
+            List<GenreModel> genreMod = dbGenres.GetAll(db);
+            return View(genreMod);
         }
 
         // GET: GenresController/Details/5
         public ActionResult Details(int id)
         {
+            List<GenreModel> genreMod = dbGenres.GetAll(db);
             return View();
         }
 
@@ -30,43 +37,34 @@ namespace FlickClick.Controllers.CMS
         // POST: GenresController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(GenreModel genreMod)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            dbGenres.Insert(db, genreMod);
+            return RedirectToAction("Index");
         }
 
         // GET: GenresController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            GenreModel genreMod = dbGenres.GetOne(db, id);
+            return View(genreMod);
         }
 
         // POST: GenresController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(GenreModel genreMod, int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            genreMod.genreID = id;
+            dbGenres.Update(db, genreMod);
+            return RedirectToAction("Index");
         }
 
         // GET: GenresController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            GenreModel genreMod = dbGenres.GetOne(db, id);
+            return View(genreMod);
         }
 
         // POST: GenresController/Delete/5
@@ -74,14 +72,8 @@ namespace FlickClick.Controllers.CMS
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            dbGenres.Delete(db, id);
+            return RedirectToAction("Index");
         }
     }
 }
