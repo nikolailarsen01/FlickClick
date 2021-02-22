@@ -1,0 +1,92 @@
+﻿@model IEnumerable<FlickClick.Models.MovieModel>
+@{
+    ViewData["Title"] = "Admin Panel";
+    ViewData["Stylesheet"] = "/css/cms.css";
+}
+
+<div>
+    <div class="contentContainter">
+        <h1>
+            Film
+        </h1>
+        <div class="sideLinks">
+            <a asp-controller="Cms" asp-action="Index">Tilbage til admin forside</a>
+            <a asp-action="Create">Tilføj film</a>
+        </div>
+        @foreach (var item in Model)
+        {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => item.movieID)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => item.movieID)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => item.title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => item.title)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => item.releaseDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => item.releaseDate)
+                </dd>
+                <!--
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.directorID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.directorID)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.duration)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.duration)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.postDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.postDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.ageRating)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.ageRating)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.comingSoon)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.comingSoon)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.picturePath)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.picturePath)
+            </dd>
+            -->
+            </dl>
+            <div class="listForm">
+                <form asp-action="Edit" asp-route-id="@item.movieID" method="get">
+                    <input type="submit" name="submit" value="Rediger">
+                </form>
+                <form asp-action="Delete" asp-route-id="@item.movieID" method="get">
+                    <input type="submit" name="submit" value="Slet">
+                </form>
+            </div>
+        }
+    </div>
+</div>

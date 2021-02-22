@@ -20,15 +20,14 @@ namespace FlickClick.Controllers.CMS
         // GET: CmsController
         public ActionResult Index()
         {
-            return View("~/Views/CMS/Movies/Index.cshtml");
+            List<MovieModel> movies = dbMovie.getMovies(db);
+            return View(movies);
         }
 
         // GET: CmsController/Details/5
         public ActionResult Details(int id)
         {
-            db.makeConnection();
-            List<MovieModel> movies = dbMovie.getMovies(db);
-            return View("~/Views/CMS/Movies/Details.cshtml", movies);
+            return View();
         }
 
         // GET: CmsController/Create
@@ -38,7 +37,7 @@ namespace FlickClick.Controllers.CMS
             MovieDirectorModel mdModel = new MovieDirectorModel();
             List<DirectorModel> directors = dbDirectors.getDirectors(db);
             mdModel.DirectorsModel = directors;
-            return View("~/Views/CMS/Movies/Create.cshtml", mdModel);
+            return View(mdModel);
         }
 
         // POST: CmsController/Create
@@ -60,7 +59,7 @@ namespace FlickClick.Controllers.CMS
             mdModel.MovieModel = mm;
             List<DirectorModel> directors = dbDirectors.getDirectors(db);
             mdModel.DirectorsModel = directors;
-            return View("~/Views/CMS/Movies/Edit.cshtml", mdModel);
+            return View(mdModel);
         }
 
         // POST: CmsController/Edit/5
@@ -86,7 +85,7 @@ namespace FlickClick.Controllers.CMS
         {
             db.makeConnection();
             MovieModel mm = dbMovie.getMovie(db, id);
-            return View("~/Views/CMS/Movies/Delete.cshtml", mm);
+            return View(mm);
         }
 
         // POST: CmsController/Delete/5
