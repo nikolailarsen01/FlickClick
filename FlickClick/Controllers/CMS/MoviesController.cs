@@ -67,17 +67,9 @@ namespace FlickClick.Controllers.CMS
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MovieDirectorModel mdModel, int id)
         {
-            /* try
-             {
-                 return RedirectToAction(nameof(Index));
-             }
-             catch
-             {*/
-            //  }
-            db.makeConnection();
             mdModel.MovieModel.movieID = id;
             dbMovie.update(db, mdModel.MovieModel);
-            return RedirectToAction("Details");
+            return RedirectToAction("Index");
         }
 
         // GET: CmsController/Delete/5

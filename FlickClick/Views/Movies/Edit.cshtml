@@ -15,9 +15,9 @@
 
 }
 
-<h1>Edit</h1>
+<h1>Rediger</h1>
 
-<h4>MovieModel</h4>
+<h4>Film</h4>
 <hr />
 <div class="contentContainter">
     <div class="row">
@@ -47,7 +47,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="MovieModel.directorID" class="control-label"></label>
-                    <select list="directors" name="MovieModel.directorID" id="director" class="form-control">
+                    <select name="MovieModel.directorID" id="director" class="form-control">
                         @foreach (var item in Model.DirectorsModel)
                         {
 
@@ -112,7 +112,7 @@
                     <span asp-validation-for="MovieModel.picturePath" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="submit" value="Save" class="btn btn-primary" />
+                    <input type="submit" name="submit" value="Gem" class="btn btn-primary" />
                 </div>
             </form>
         </div>
