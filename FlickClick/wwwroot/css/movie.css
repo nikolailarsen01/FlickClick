@@ -1,3 +1,38 @@
 ﻿body {
 
 }
+
+.movie-top-bar{
+    height: 20%;
+    width: 100%;
+}
+
+.movie-top-bar-row{
+    display:flex;
+    justify-content: space-between;
+}
+
+.movie-top-bar-row-item {
+    display: flex;
+}
+
+
+.c-red {
+    color: red;
+}
+
+.m-left-1{
+    margin-left: 1%;
+}
+
+.movie-media-bar{
+    display: flex;
+}
+
+.movie-media-bar-banner{
+    width: 30%;
+}
+
+.movie-media-bar-trailer{
+    width: 70%;
+}
