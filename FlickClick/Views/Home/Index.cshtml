@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FlickClick.Models.MovieModel>
+﻿@model HomeModel
 
 @{
     ViewData["Stylesheet"] = "/css/index.css";
@@ -9,20 +9,26 @@
         <a class="movie-banners-header-item right ul" href="dinmor.lol">Show all</a>
     </div>
     <div class="movie-banners-items">
-        @foreach (var item in Model)
+        @foreach (var item in Model.releaseDateSort)
         {
-        <div class="content">
-            <a href="https://unsplash.com/photos/HkTMcmlMOUQ" target="_blank">
-                <div class="content-overlay"></div>
-                <img class="content-image" src="@item.picturePath">
-                <div class="content-details fadeIn-bottom">
-                    <h3 class="content-title">Play Trailer</h3>
-                    <img class="play-button" src="https://i.imgur.com/vXXQugU.png" />
-                    <p class="content-text">Star wars</p>
+            <div class="movie-banners-item">
+                <div class="content">
+                    <a href="https://unsplash.com/photos/HkTMcmlMOUQ" target="_blank">
+                        <div class="content-overlay"></div>
+                        <img class="content-image" src="@item.picturePath">
+                        <div class="content-details fadeIn-bottom">
+                            <h3 class="content-title">Play Trailer</h3>
+                            <img class="play-button" src="https://i.imgur.com/vXXQugU.png" />
+                            <p class="content-text">@item.title</p>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        }
+                <div class="content-comments">
+                    <p class="content-comments-count">@item.commentsCount</p>
+                    <img class="content-comments-img" src="~/assets/images/commentBubble.png" />
+                </div>
+            </div>
+         }
     </div>
 </div>
 
@@ -32,10 +38,24 @@
         <a class="movie-banners-header-item right ul" href="dinmor.lol">Show all</a>
     </div>
     <div class="movie-banners-items">
-        @foreach (var item in Model)
+        @foreach (var item in Model.commentCountSort)
         {
             <div class="movie-banners-item">
-                <img class="movie-banners-item-picture" src="@item.picturePath" />
+                <div class="content">
+                    <a href="https://unsplash.com/photos/HkTMcmlMOUQ" target="_blank">
+                        <div class="content-overlay"></div>
+                        <img class="content-image" src="@item.picturePath">
+                        <div class="content-details fadeIn-bottom">
+                            <h3 class="content-title">Play Trailer</h3>
+                            <img class="play-button" src="https://i.imgur.com/vXXQugU.png" />
+                            <p class="content-text">@item.title</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="content-comments">
+                    <p class="content-comments-count">@item.commentsCount</p>
+                    <img class="content-comments-img" src="~/assets/images/commentBubble.png" />
+                </div>
             </div>
         }
     </div>
@@ -47,57 +67,52 @@
             <p class="movie-extra-halfitem-header-item">NEWS</p>
             <a class="movie-extra-halfitem-header-item right ul" href="dinmor.lol">Show all</a>
         </div>
-        <div class="movie-extra-item">
-            <small>11.09.18</small>
-            <h6>Title</h6>
-            <p class="movie-extra-item-p">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
-            </p>
-            <a class="ul" href="Extraidk.idk">Read more</a>
+            @foreach (var item in Model.postDateSort)
+            {
+                <div class="movie-extra-item">
+                    <small>@item.postDate.ToString("dd-mm-yyyy")</small>
+                    <h6>@item.title</h6>
+                    <p class="movie-extra-item-p">
+                        @if (@item.text.Length > 200)
+                        {
+                            @item.text.Substring(0, 200)
+                        }
+                        else
+                        {
+                            @item.text
+                        }
+                    </p>
+                    <a class="ul" href="Extraidk.idk">Read more</a>
+                </div>
+            }
         </div>
-        <div class="movie-extra-item">
-            <small>11.09.18</small>
-            <h6>Title</h6>
-            <p class="movie-extra-item-p">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
-            </p>
-            <a class="ul" href="Extraidk.idk">Read more</a>
-        </div>
-
-    </div>
     <div class="movie-extra-halfitem">
         <div class="movie-extra-halfitem-header">
             <p class="movie-extra-halfitem-header-item">COMING SOON!</p>
             <a class="movie-extra-halfitem-header-item right ul" href="dinmor.lol">Show all</a>
         </div>
-
-        <div class="movie-extra-item">
-            <small>11.09.18</small>
-            <h6>Movie Title</h6>
-            <div class="movie-extra-item-section">
-                <img class="movie-extra-item-section-picture" src="~/assets/movie-banners/starwarstest.jpeg" />
-                <div>
-                    <p class="movie-extra-item-section-p">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                    </p>
-                    <a class="ul" href="Extraidk.idk">Read more</a>
+            @foreach (var item in Model.releaseDateComingSoonSort)
+            {
+                <div class="movie-extra-item">
+                    <small>@item.releaseDate.ToString("dd-mm-yyyy")</small>
+                    <h6>@item.title</h6>
+                    <div class="movie-extra-item-section">
+                        <img class="movie-extra-item-section-picture" src="@item.picturePath" />
+                        <div>
+                            <p class="movie-extra-item-section-p">
+                                @if (@item.description.Length > 200)
+                                {
+                                    @item.description.Substring(0, 200)
+                                }
+                                else
+                                {
+                                    @item.description
+                                }
+                            </p>
+                            <a class="ul" href="Extraidk.idk">Read more</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
-
-        <div class="movie-extra-item">
-            <small>11.09.18</small>
-            <h6>Movie Title</h6>
-            <div class="movie-extra-item-section">
-                <img class="movie-extra-item-section-picture" src="~/assets/movie-banners/starwarstest.jpeg" />
-                <div>
-                    <p class="movie-extra-item-section-p">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                    </p>
-                    <a class="ul" href="Extraidk.idk">Read more</a>
-                </div>
-            </div>
-        </div>
-
-    </div>
 </div>

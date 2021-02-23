@@ -15,7 +15,7 @@ namespace FlickClick.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private string connectionString = "server=localhost;userid=root;database=steensoft_dk_flickclick;";
+        DBConnector dbc = new DBConnector();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -24,34 +24,73 @@ namespace FlickClick.Controllers
 
         public IActionResult Index()
         {
-            List<MovieModel> recentTrailers = new List<MovieModel>();
+            HomeModel data = new HomeModel();
 
-            string query = @"SELECT * FROM movies ORDER BY releaseDate DESC LIMIT 6";
+            List<PreviewMovieModel> recentTrailers = new List<PreviewMovieModel>();
+            List<PreviewMovieModel> commentCountTrailers = new List<PreviewMovieModel>();
+            List<NewsModel> recentNews = new List<NewsModel>();
+            List<PreviewMovieModel> ComingSoonTrailers = new List<PreviewMovieModel>();
 
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            MySqlCommand cmd = new MySqlCommand(query, connection);
-            connection.Open();
-            MySqlDataAdapter dtb = new MySqlDataAdapter();
-            dtb.SelectCommand = cmd;
-            DataTable dtable = new DataTable();
-            dtb.Fill(dtable);
+
+            //string query = @"SELECT * FROM movies ORDER BY releaseDate DESC LIMIT 6";
+            string query = @"SELECT commentjunction.movieID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.ID = movies.movieID GROUP BY movieID ORDER BY releaseDate DESC LIMIT 6";
+            DataTable dtable = dbc.sqlSelectQueryOld(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
-                MovieModel mm = new MovieModel();
-                mm.movieID = (int)dtable.Rows[i]["movieId"];
-                mm.title = dtable.Rows[i]["title"].ToString();
-                mm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
-                mm.description = dtable.Rows[i]["description"].ToString();
-                mm.directorID = (int)dtable.Rows[i]["directorID"];
-                mm.duration = dtable.Rows[i]["duration"].ToString();
-                mm.postDate = (DateTime)dtable.Rows[i]["postDate"];
-                mm.ageRating = (int)dtable.Rows[i]["ageRating"];
-                mm.comingSoon = dtable.Rows[i]["comingSoon"].ToString();
-                mm.picturePath = dtable.Rows[i]["picturePath"].ToString();
-                recentTrailers.Add(mm);
+                PreviewMovieModel pmm = new PreviewMovieModel();
+                pmm.movieID = (int)dtable.Rows[i]["movieId"];
+                pmm.title = dtable.Rows[i]["title"].ToString();
+                pmm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
+                pmm.picturePath = dtable.Rows[i]["picturePath"].ToString();
+                pmm.commentsCount = Convert.ToInt32(dtable.Rows[i]["Count(*)"]);
+                recentTrailers.Add(pmm);
             }
 
-            return View(recentTrailers);
+            query = @"SELECT commentjunction.movieID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.ID = movies.movieID GROUP BY movieID ORDER BY Count(*) DESC LIMIT 6";
+            dtable = dbc.sqlSelectQueryOld(query);
+            for (int i = 0; i < dtable.Rows.Count; i++)
+            {
+                PreviewMovieModel pmm = new PreviewMovieModel();
+                pmm.movieID = (int)dtable.Rows[i]["movieId"];
+                pmm.title = dtable.Rows[i]["title"].ToString();
+                pmm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
+                pmm.picturePath = dtable.Rows[i]["picturePath"].ToString();
+                pmm.commentsCount = Convert.ToInt32(dtable.Rows[i]["Count(*)"]);
+                commentCountTrailers.Add(pmm);
+            }
+
+            query = @"SELECT * FROM news ORDER BY postDate DESC LIMIT 2";
+            dtable = dbc.sqlSelectQueryOld(query);
+            for (int i = 0; i < dtable.Rows.Count; i++)
+            {
+                NewsModel nw = new NewsModel();
+                nw.ID = (int)dtable.Rows[i]["ID"];
+                nw.title = dtable.Rows[i]["title"].ToString();
+                nw.text = dtable.Rows[i]["text"].ToString();
+                nw.postDate = (DateTime)dtable.Rows[i]["postDate"];
+                recentNews.Add(nw);
+            }
+
+            query = @"SELECT * FROM movies WHERE ComingSoon='1' ORDER BY releaseDate LIMIT 2";
+            dtable = dbc.sqlSelectQueryOld(query);
+            for (int i = 0; i < dtable.Rows.Count; i++)
+            {
+                PreviewMovieModel pmm = new PreviewMovieModel();
+                pmm.movieID = (int)dtable.Rows[i]["movieId"];
+                pmm.title = dtable.Rows[i]["title"].ToString();
+                pmm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
+                pmm.description = dtable.Rows[i]["description"].ToString();
+                pmm.picturePath = dtable.Rows[i]["picturePath"].ToString();
+                ComingSoonTrailers.Add(pmm);
+            }
+
+
+            data.releaseDateSort = recentTrailers;
+            data.commentCountSort = commentCountTrailers;
+            data.postDateSort = recentNews;
+            data.releaseDateComingSoonSort = ComingSoonTrailers;
+
+            return View(data);
         }
 
         public IActionResult Privacy()

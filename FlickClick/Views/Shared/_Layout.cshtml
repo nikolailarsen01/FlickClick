@@ -39,17 +39,17 @@
                 <div class="layout-header-section-whole right">
                     @if (@HttpContextAccessor.HttpContext.Session.GetInt32("userID") > 0)
                     {
-                        <a class="mg" href="Home/UserPage">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>                        
-                        <a class="mg" href="Login/Logout">Log ud</a>
+                        <a class="mg" href="User/UserPage">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>                        
+                        <a class="mg" href="User/Logout">Log ud</a>
                     }
                     else
                     {
-                        <form method="post" action="/Login/ValidateLogin">
+                        <form method="post" action="/User/ValidateLogin">
                             <input name="email" type="email" placeholder="Email" />
                             <input name="password" type="password" placeholder="password" />
                             <input type="submit" value="Sign in" />
                         </form>
-                            <a class="mg" href="Login/Register">Not a member?</a>
+                            <a class="mg" href="User/Register">Not a member?</a>
                         
                     }
                 </div>

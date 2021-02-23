@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FlickClick.Controllers
 {
-    public class LoginController : Controller
+    public class UserController : Controller
     {
         private string connectionString = "server=localhost;userid=root;database=steensoft_dk_flickclick;";
 
@@ -232,6 +232,11 @@ namespace FlickClick.Controllers
 
             connection.Close();
 
+            return View();
+        }
+
+        public ActionResult UserPage()
+        {
             return View();
         }
     }

@@ -104,6 +104,7 @@ body {
 
 .content-title {
     color: red !important;
+    font-size: 1.5vh
 }
 
 .main-title {
@@ -115,7 +116,6 @@ body {
 
 .content {
     position: relative;
-    width: 16%;
     display: inline-block;
     margin: auto;
     overflow: hidden;
@@ -177,9 +177,29 @@ body {
 
 .content-details p {
     color: #fff;
-    font-size: 0.8em;
+    font-size: 1.5vh;
 }
 
 .fadeIn-bottom {
     top: 80%;
+}
+
+.content-comments{
+    display: flex;
+    align-content:end;
+    position: relative;
+}
+
+.content-comments-img{
+    width: 20%;
+    margin-left:80%;
+}
+
+.content-comments-count {
+    position: absolute;
+    top: 35%;
+    left: 90%;
+    color: white;
+    transform: translate(-50%, -50%);
+    font-size: 0.8vw;
 }
