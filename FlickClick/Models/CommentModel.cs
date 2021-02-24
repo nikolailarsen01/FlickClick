@@ -8,7 +8,7 @@ namespace FlickClick.Models
     public class CommentModel
     {
         public string username { get; set; }
-        public DateTime date { get; set; }
+        public string date { get; set; }
         public string comment { get; set; }
 
 

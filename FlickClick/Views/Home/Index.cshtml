@@ -13,7 +13,7 @@
         {
             <div class="movie-banners-item">
                 <div class="content">
-                    <a href="https://unsplash.com/photos/HkTMcmlMOUQ" target="_blank">
+                    <a asp-controller="View" asp-action="Movie" asp-route-id="@item.movieID">
                         <div class="content-overlay"></div>
                         <img class="content-image" src="@item.picturePath">
                         <div class="content-details fadeIn-bottom">
@@ -42,7 +42,7 @@
         {
             <div class="movie-banners-item">
                 <div class="content">
-                    <a href="https://unsplash.com/photos/HkTMcmlMOUQ" target="_blank">
+                    <a asp-controller="View" asp-action="Movie" asp-route-id="@item.movieID">
                         <div class="content-overlay"></div>
                         <img class="content-image" src="@item.picturePath">
                         <div class="content-details fadeIn-bottom">
