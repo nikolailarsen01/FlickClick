@@ -12,7 +12,7 @@ namespace FlickClick
         public List<DirectorModel> getDirectors(DBConnector db)
         {
             List<DirectorModel> directors = new List<DirectorModel>();
-            string query = "SELECT * FROM directors";
+            string query = "SELECT * FROM directors WHERE NOT directorID=1";
             DataTable dtable = db.sqlSelectQueryOld(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
@@ -28,7 +28,7 @@ namespace FlickClick
         public DirectorModel GetOne(DBConnector db, int id)
         {
             DirectorModel dirMod = new DirectorModel();
-            string query = "SELECT * FROM directors WHERE directorID=@directorID";
+            string query = "SELECT * FROM directors WHERE directorID=@directorID AND NOT directorID=1";
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.Parameters.AddWithValue("@directorID", id);
             DataTable dTable = db.SqlSelectQuery(cmd);
@@ -62,8 +62,14 @@ namespace FlickClick
         }
         public void Delete(DBConnector db, int id)
         {
-            string query = "DELETE FROM `directors` WHERE directorID=@directorID";
+            string query = "UPDATE `movies` SET directorID=1 WHERE directorID=@directorID";
             MySqlCommand cmd = new MySqlCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@directorID", id);
+            db.sqlDeleteQuery(cmd);
+
+            query = "DELETE FROM `directors` WHERE directorID=@directorID";
+            cmd = new MySqlCommand(query);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("@directorID", id);
             db.sqlDeleteQuery(cmd);

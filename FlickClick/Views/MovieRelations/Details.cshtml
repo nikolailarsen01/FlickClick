@@ -1,0 +1,174 @@
+﻿@model FlickClick.Models.MovieRelationModel;
+@{
+    ViewData["Title"] = "Admin Panel: Film relationer";
+    ViewData["Stylesheet"] = "/css/cms.css";
+}
+
+<h1>Tilføj/Ændre relation</h1>
+
+<div class="contentContainter">
+    <div class="row">
+        <div class="col-md-4">
+            @Html.AntiForgeryToken()
+            <!-- Add relation -->
+            <h2>Tilføj relation</h2>
+            <form asp-action="Details">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Genre</label>
+                    <select id="genreSelect" name="selectedGenreID" class="form-control">
+                        @foreach (var item in Model.genres)
+                        {
+                            if (Model.genreJunction.IndexOf(item.genreID) == -1)
+                            {
+                                <option value="@item.genreID">@item.genreID - @item.genreName</option>
+                            }
+                            else { }
+                        }
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="genreSelectBtn" type="submit" name="submit" value="Gem genre" class="btn btn-primary" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Star</label>
+                    <select id="starSelect" name="selectedStarID" class="form-control">
+                        @foreach (var item in Model.stars)
+                        {
+                            if (Model.starJunction.IndexOf(item.starID) == -1)
+                            {
+                                <option value="@item.starID">@item.starID - @item.firstName @item.lastName</option>
+                            }
+                            else { }
+                        }
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="starSelectBtn" type="submit" name="submit" value="Gem stjerne" class="btn btn-primary" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Writer</label>
+                    <select id="writerSelect" name="selectedWriterID" class="form-control">
+                        @foreach (var item in Model.writers)
+                        {
+                            if (Model.writerJunction.IndexOf(item.writerID) == -1)
+                            {
+                                <option value="@item.writerID">@item.writerID - @item.firstName @item.lastName</option>
+                            }
+                            else { }
+                        }
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="writerSelectBtn" type="submit" name="submit" value="Gem skribent" class="btn btn-primary" />
+                </div>
+            </form>
+            <!-- Remove relation -->
+            <h2>Slet relation</h2>
+            <form asp-action="Details">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Genre</label>
+                    <select id="genreDelete" name="selectedGenreID" class="form-control">
+                        @foreach (var item in Model.genres)
+                        {
+                            if (Model.genreJunction.IndexOf(item.genreID) == -1) { }
+                            else
+                            {
+                                <option value="@item.genreID">@item.genreID - @item.genreName</option>
+
+                            }
+                        }
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="genreDeleteBtn" type="submit" name="submit" value="Slet genre" class="btn btn-primary" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Star</label>
+                    <select id="starDelete" name="selectedStarID" class="form-control">
+                        @foreach (var item in Model.stars)
+                        {
+                            if (Model.starJunction.IndexOf(item.starID) == -1) { }
+                            else
+                            {
+                                <option value="@item.starID">@item.starID - @item.firstName @item.lastName</option>
+                            }
+                        }
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="starDeleteBtn" type="submit" name="submit" value="Slet stjerne" class="btn btn-primary" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Writer</label>
+                    <select id="writerDelete" name="selectedWriterID" class="form-control">
+                        @foreach (var item in Model.writers)
+                        {
+                            if (Model.writerJunction.IndexOf(item.writerID) == -1) { }
+                            else
+                            {
+                                <option value="@item.writerID">@item.writerID - @item.firstName @item.lastName</option>
+                            }
+                        }
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="writerDeleteBtn" type="submit" name="submit" value="Slet skribent" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Index">Tilbage til listen</a>
+    </div>
+</div>
+
+@if (Model.genres.Count == Model.genreJunction.Count)
+{
+    <script>
+        document.getElementById("genreSelect").disabled = true
+        document.getElementById("genreSelectBtn").disabled = true
+    </script>
+}
+@if (Model.stars.Count == Model.starJunction.Count)
+{
+    <script>
+        document.getElementById("starSelect").disabled = true
+        document.getElementById("starSelectBtn").disabled = true
+    </script>
+}
+@if (Model.writers.Count == Model.writerJunction.Count)
+{
+    <script>
+        document.getElementById("writerSelect").disabled = true
+        document.getElementById("writerSelectBtn").disabled = true
+    </script>
+}
+@if (Model.genreJunction.Count == 0)
+{
+    <script>
+        document.getElementById("genreDelete").disabled = true
+        document.getElementById("genreDeleteBtn").disabled = true
+    </script>
+}
+@if (Model.starJunction.Count == 0)
+{
+    <script>
+        document.getElementById("starDelete").disabled = true
+        document.getElementById("starDeleteBtn").disabled = true
+    </script>
+}
+@if (Model.writerJunction.Count == 0)
+{
+    <script>
+        document.getElementById("writerDelete").disabled = true
+        document.getElementById("writerDeleteBtn").disabled = true
+    </script>
+}
