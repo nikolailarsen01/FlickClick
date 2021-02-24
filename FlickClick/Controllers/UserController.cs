@@ -40,7 +40,7 @@ namespace FlickClick.Controllers
             {
                 int userID = (int)dtable.Rows[0]["userID"];
 
-                query = "SELECT userID, firstname.firstName FROM users INNER JOIN firstname ON users.userID = firstname.firstNameID WHERE userID=" + userID + " AND Password=" + password;
+                query = "SELECT userID, firstnames.firstName FROM users INNER JOIN firstnames ON users.userID = firstnames.firstNameID WHERE userID=" + userID + " AND Password=" + password;
                 cmd = new MySqlCommand(query, connection);
                 dtb = new MySqlDataAdapter();
                 dtb.SelectCommand = cmd;

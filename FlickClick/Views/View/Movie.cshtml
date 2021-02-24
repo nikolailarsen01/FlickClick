@@ -55,10 +55,10 @@
     <p>Comments: @Model.commentCount</p>
     @if (@HttpContextAccessor.HttpContext.Session.GetInt32("userID") > 0)
     {
-        <div class="">
+        <div class="movie-comments-input">
             Post a comment
             <form>
-                <textarea class="movie-comments-text" disabled>Log in or sign up to write a comment</textarea>
+                <textarea class="movie-comments-text">Write a comment here..</textarea>
                 <input type="submit" />
             </form>
         </div>
