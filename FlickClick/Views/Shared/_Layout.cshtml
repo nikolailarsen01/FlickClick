@@ -17,9 +17,9 @@
             <div class="layout-header">
                 <img onclick="HomePage();" style="cursor: pointer;" src="~/assets/images/logo.png" />
                 <div class="layout-header-section-half right">
-                    <a class="layout-header-section-half-item">HOME</a>
+                    <a class="layout-header-section-half-item" asp-controller="Home" asp-action="Index">HOME</a>
                     <a class="layout-header-section-half-item">NEWS</a>
-                    <a class="layout-header-section-half-item">CONTACT</a>
+                    <a class="layout-header-section-half-item" asp-controller="Contact" asp-action="Index">CONTACT</a>
                 </div>
                 <div class="layout-header-section">
                     <div class="layout-header-section-half">
@@ -61,7 +61,7 @@
             </main>
         </div>
         <footer class="layout-footer">
-            <a class="layout-footer-item">HOME</a> | <a class="layout-footer-item">NEWS</a> | <a class="layout-footer-item">CONTACT</a>
+            <a class="layout-footer-item" asp-controller="Home" asp-action="Index">HOME</a> | <a class="layout-footer-item">NEWS</a> | <a class="layout-footer-item" asp-controller="Contact" asp-action="Index">CONTACT</a>
             <br />
             Social media logos here
             <br />
