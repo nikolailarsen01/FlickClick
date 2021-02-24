@@ -1,23 +1,26 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
     ViewData["Stylesheet"] = "/css/movie.css";
 }
 
-<div class="movie-top-bar">
-    <div class="movie-top-bar-row">
+<div class="movie-bar">
+    <div class="movie-bar-row">
         <h1 class="w-auto">TestTitle</h1><p class="w-auto">Comments: 23</p>
     </div>
-    <div class="movie-top-bar-row">
-        <div class="movie-top-bar-row-item">
+    <div class="movie-bar-row">
+        <div class="movie-bar-row-item">
             <p class="w-auto">Age Rating:&nbsp;<p class="c-red m-left-1"> 15+</p>
         </div>
-        <div class="movie-top-bar-row-item">
-            <p class="w-auto">Duration:&nbsp;<p class="c-red m-left-1"> 15+</p>
+        <div class="movie-bar-row-item">
+            <p class="w-auto">Duration:&nbsp;<p class="c-red m-left-1"> 2h 22m</p>
         </div>
-        <div class="movie-top-bar-row-item">
-            <p class="w-auto">Genres:&nbsp;<p class="c-red m-left-1"> 15+</p>
+        <div class="movie-bar-row-item">
+            <p class="w-auto">Genres:&nbsp;<p class="c-red m-left-1"> Crime</p>
         </div>
-        <div class="movie-top-bar-row-item">
-            <p class="w-auto">Release Date:&nbsp;<p class="c-red m-left-1"> 15+</p>
+        <div class="movie-bar-row-item">
+            <p class="w-auto">Release Date:&nbsp;<p class="c-red m-left-1"> 28-5-2018</p>
         </div>
     </div>
 </div>
@@ -25,4 +28,56 @@
 <div class="movie-media-bar">
     <img class="movie-media-bar-banner" src="~/assets/movie-banners/starwarstest.jpeg" />
     <iframe class="movie-media-bar-trailer" src="https://www.youtube.com/embed/8Qn_spdM5Zg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<div class="movie-bar">
+    <div class="movie-bar-row">
+        <div class="movie-bar-row-item">
+            <p class="w-auto">Director:&nbsp;<p class="c-red m-left-1"> 15+</p>
+        </div>
+        <div class="movie-bar-row-item">
+            <p class="w-auto">Writers:&nbsp;<p class="c-red m-left-1"> 15+</p>
+        </div>
+        <div class="movie-bar-row-item">
+            <p class="w-auto">Stars:&nbsp;<p class="c-red m-left-1"> 15+</p>
+        </div>
+    </div>
+</div>
+
+<div class="movie-description">
+    <h2>Description</h2>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic</p>
+</div>
+
+
+<div class="movie-comments">
+    <p>Comments: 0</p>
+    @if (@HttpContextAccessor.HttpContext.Session.GetInt32("userID") > 0)
+    {
+        <div class="">
+            Post a comment
+            <form>
+                <textarea class="movie-comments-text" disabled>Log in or sign up to write a comment</textarea>
+                <input type="submit" />
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="movie-comments-input">
+            Post a comment
+            <form>
+                <textarea class="movie-comments-text" disabled>Log in or sign up to write a comment</textarea>
+                <input class="movie-comments-submit" type="submit" disabled/>
+            </form>
+        </div>
+    }
+
+    <div class="movie-comments-section">
+        <div class="movie-comments-section-comment">
+            <div class="movie-comments-section-comment-user-date">
+                <p>USERNAME&nbsp;<p class="c-red">03-09-2018</p>
+            </div>
+                    <p>dard dummy text ever since the 1500s, when an unknown printer</p>
+            </div>
 </div>
