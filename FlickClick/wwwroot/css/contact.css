@@ -1,0 +1,17 @@
+﻿@import "common.css";
+
+.contactForm{
+    margin-top: 20px;
+    width: 60%;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.contactFormTitle {
+    text-align: center;
+    color: #D41A26;
+    width: 100%;
+}
+.contactFormBase {
+    width: 100%
+}

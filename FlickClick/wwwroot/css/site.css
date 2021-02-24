@@ -65,9 +65,8 @@ button, input[type="submit"], input[type="reset"] {
     outline: inherit;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
-    height: 2.2vh;
-    font-size: 1.5vh;
+.headerInput {
+    height: 21px;
     color: black;
 }
 
