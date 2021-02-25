@@ -63,7 +63,7 @@ namespace FlickClick.BL
             {
                 int userID = (int)dTable.Rows[0]["userID"];
                 MySqlDataAdapter dtb = new MySqlDataAdapter();
-                query = "SELECT userID, firstnames.firstName FROM users INNER JOIN firstnames ON users.userID = firstnames.firstNameID WHERE userID=@userID AND password=@password";
+                query = "SELECT userID, firstnames.firstName FROM users INNER JOIN firstnames ON users.firstNameID = firstnames.firstNameID WHERE userID=@userID AND password=@password";
                 cmd = new MySqlCommand(query);
                 cmd.Parameters.AddWithValue("@userID", userID);
                 cmd.Parameters.AddWithValue("@password", password);
