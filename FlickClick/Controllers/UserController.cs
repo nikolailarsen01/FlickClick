@@ -40,6 +40,7 @@ namespace FlickClick.Controllers
                     user = result.Item1;
                     HttpContext.Session.SetInt32("userID", user.userID);
                     HttpContext.Session.SetString("firstName", user.firstName);
+                    ViewBag.userID = HttpContext.Session.GetInt32("userID");
                     return View(user);
                 }
                 else
