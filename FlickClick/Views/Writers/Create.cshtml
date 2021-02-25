@@ -5,9 +5,9 @@
     ViewData["Stylesheet"] = "/css/cms.css";
 }
 
-<h1>Tilføj</h1>
+<h1>Add</h1>
 
-<h4>Skribent</h4>
+<h4>Writer</h4>
 <hr />
 <div class="contentContainter">
     <div class="row">
@@ -17,27 +17,27 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="firstName" class="control-label"></label>
-                    <input asp-for="firstName" class="form-control" />
+                    <input asp-for="firstName" type="text" class="form-control" required />
                     <span asp-validation-for="firstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="lastName" class="control-label"></label>
-                    <input asp-for="lastName" class="form-control" />
+                    <input asp-for="lastName" type="text" class="form-control" required />
                     <span asp-validation-for="lastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="dateOfBirth" class="control-label"></label>
-                    <input asp-for="dateOfBirth" class="form-control" />
+                    <input asp-for="dateOfBirth" type="date" class="form-control" required />
                     <span asp-validation-for="dateOfBirth" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Tilføj" class="btn btn-primary" />
+                    <input type="submit" value="Add" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
 
     <div>
-        <a asp-action="Index">Tilbage til listen</a>
+        <a asp-action="Index">Back to list</a>
     </div>
 </div>

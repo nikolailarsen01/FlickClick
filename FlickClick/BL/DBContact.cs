@@ -37,7 +37,7 @@ namespace FlickClick.BL
             cmd.Parameters.AddWithValue("@contactName", contact.contactName);
             cmd.Parameters.AddWithValue("@contactMail", contact.contactMail);
             cmd.Parameters.AddWithValue("@message", contact.message);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
     }
 }

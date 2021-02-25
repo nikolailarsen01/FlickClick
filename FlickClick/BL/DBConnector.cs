@@ -14,11 +14,18 @@ namespace FlickClick
             connection = new MySqlConnection(connectionString);
             connection.Open();
         }
-        ~DBConnector() { }
+        ~DBConnector() 
+        {
+            connection.Close();
+        }
 
         public bool makeConnection()
         {
             return connection.Ping();
+        }
+        public string getConnection()
+        {
+            return connectionString;
         }
         public DataTable sqlSelectQueryOld(string query)
         {
@@ -39,7 +46,7 @@ namespace FlickClick
             dap.Fill(dtb);
             return dtb;
         }
-        public void sqlUpdateOrAddQuery(MySqlCommand cmd)
+        public void sqlUpdateOrInsertQuery(MySqlCommand cmd)
         {
             cmd.Connection = connection;
             cmd.Prepare();

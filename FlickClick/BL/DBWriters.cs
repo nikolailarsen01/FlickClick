@@ -48,7 +48,7 @@ namespace FlickClick.BL
             cmd.Parameters.AddWithValue("@firstName", writer.firstName);
             cmd.Parameters.AddWithValue("@lastName", writer.lastName);
             cmd.Parameters.AddWithValue("@dateOfBirth", writer.dateOfBirth.ToString("yyyy-MM-dd"));
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Update(DBConnector db, WriterModel writer)
         {
@@ -59,7 +59,7 @@ namespace FlickClick.BL
             cmd.Parameters.AddWithValue("@lastName", writer.lastName);
             cmd.Parameters.AddWithValue("@dateOfBirth", writer.dateOfBirth.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@writerID", writer.writerID);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Delete(DBConnector db, int id)
         {

@@ -47,7 +47,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@firstName", dirMod.firstName);
             cmd.Parameters.AddWithValue("@lastName", dirMod.lastName);
             cmd.Parameters.AddWithValue("@dateOfBirth", dirMod.dateOfBirth.ToString("yyyy-MM-dd"));
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Update(DBConnector db, DirectorModel dirMod)
         {
@@ -58,7 +58,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@lastName", dirMod.lastName);
             cmd.Parameters.AddWithValue("@dateOfBirth", dirMod.dateOfBirth.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@directorID", dirMod.directorID);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Delete(DBConnector db, int id)
         {

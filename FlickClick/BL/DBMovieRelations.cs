@@ -30,7 +30,7 @@ namespace FlickClick.BL
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("@movieID", movieID);
             cmd.Parameters.AddWithValue("@id", id);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Delete(DBConnector db, int id, int movieID, string table, string column)
         {

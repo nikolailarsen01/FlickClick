@@ -42,7 +42,7 @@ namespace FlickClick.BL
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("@genreName", genre.genreName);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Update(DBConnector db, GenreModel genre)
         {
@@ -51,7 +51,7 @@ namespace FlickClick.BL
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("@genreName", genre.genreName);
             cmd.Parameters.AddWithValue("@genreID", genre.genreID);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Delete(DBConnector db, int id)
         {

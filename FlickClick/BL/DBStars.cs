@@ -48,7 +48,7 @@ namespace FlickClick.BL
             cmd.Parameters.AddWithValue("@firstName", star.firstName);
             cmd.Parameters.AddWithValue("@lastName", star.lastName);
             cmd.Parameters.AddWithValue("@dateOfBirth", star.dateOfBirth.ToString("yyyy-MM-dd"));
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Update(DBConnector db, StarModel star)
         {
@@ -59,7 +59,7 @@ namespace FlickClick.BL
             cmd.Parameters.AddWithValue("@lastName", star.lastName);
             cmd.Parameters.AddWithValue("@dateOfBirth", star.dateOfBirth.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@starID", star.starID);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Delete(DBConnector db, int id)
         {

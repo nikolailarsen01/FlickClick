@@ -63,7 +63,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
             cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);
             cmd.Parameters.AddWithValue("@movieID", movie.movieID);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public void add(DBConnector db, MovieModel movie)
         {
@@ -81,7 +81,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
             cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
             cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);
-            db.sqlUpdateOrAddQuery(cmd);
+            db.sqlUpdateOrInsertQuery(cmd);
         }
         public  void delete(DBConnector db, int id)
         {
