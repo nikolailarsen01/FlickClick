@@ -58,7 +58,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@description", movie.description);
             cmd.Parameters.AddWithValue("@directorID", movie.directorID);
             cmd.Parameters.AddWithValue("@duration", movie.duration);
-            cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
             cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
             cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);

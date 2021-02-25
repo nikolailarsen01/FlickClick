@@ -1,12 +1,13 @@
 ﻿@model FlickClick.Models.NewsModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Admin Panel: News Edit";
+    ViewData["Stylesheet"] = "/css/cms.css";
 }
 
 <h1>Edit</h1>
 
-<h4>NewsModel</h4>
+<h4>News</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,22 +15,23 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ID" class="control-label"></label>
-                <input asp-for="ID" class="form-control" />
+                <input asp-for="ID" disabled class="form-control" />
                 <span asp-validation-for="ID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="title" class="control-label"></label>
-                <input asp-for="title" class="form-control" />
+                <input asp-for="title" type="text" maxlength="64" class="form-control" required />
                 <span asp-validation-for="title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="text" class="control-label"></label>
-                <input asp-for="text" class="form-control" />
+                <textarea asp-for="text" maxlength="1024" class="form-control" required>
+                </textarea>
                 <span asp-validation-for="text" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="postDate" class="control-label"></label>
-                <input asp-for="postDate" class="form-control" />
+                <input asp-for="postDate" disabled class="form-control" />
                 <span asp-validation-for="postDate" class="text-danger"></span>
             </div>
             <div class="form-group">

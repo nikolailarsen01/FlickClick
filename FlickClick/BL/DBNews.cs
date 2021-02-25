@@ -42,11 +42,11 @@ namespace FlickClick.BL
         public void Insert(DBConnector db, NewsModel news)
         {
             string query = "INSERT INTO `news` (`title`, `text`, `postDate`)" +
-                "VALUES (@tile, @text, @postDate)";
+                "VALUES (@title, @text, @postDate)";
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.Parameters.AddWithValue("@title", news.title);
             cmd.Parameters.AddWithValue("@text", news.text);
-            cmd.Parameters.AddWithValue("@postDate", news.postDate.ToString("dd-MM-yy"));
+            cmd.Parameters.AddWithValue("@postDate", DateTime.Now.ToString("yyyy-MM-dd"));
             db.sqlUpdateOrInsertQuery(cmd);
         }
         public void Update(DBConnector db, NewsModel news)
