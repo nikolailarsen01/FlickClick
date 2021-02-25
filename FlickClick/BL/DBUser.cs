@@ -30,19 +30,20 @@ namespace FlickClick.BL
             }
             return builder.ToString();
         }
-        public string GetSalt(DBConnector db, string email)
+        public string GetSalt(DBConnector db, string email, string tableName)
         {
-            string query = "SELECT * FROM emailusers WHERE email=@email";
+            //Table name is either user or admin
+            string query = "SELECT * FROM email"+tableName+"s WHERE email=@email";
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.Parameters.AddWithValue("@email", email);
             DataTable dTable = db.SqlSelectQuery(cmd);
             if (dTable.Rows.Count > 0)
             {
-                int userID = (int)dTable.Rows[0]["userID"];
+                int ID = (int)dTable.Rows[0][ tableName+ "ID"];
                 MySqlDataAdapter dtb = new MySqlDataAdapter();
-                query = "SELECT passwordSalt FROM users WHERE userID=@userID";
+                query = "SELECT passwordSalt FROM "+tableName+"s WHERE "+tableName+"ID=@ID";
                 cmd = new MySqlCommand(query);
-                cmd.Parameters.AddWithValue("@userID", userID);
+                cmd.Parameters.AddWithValue("@ID", ID);
                 dTable = db.SqlSelectQuery(cmd);
                 if (dTable.Rows.Count > 0)
                 {
@@ -78,6 +79,33 @@ namespace FlickClick.BL
                 else return Tuple.Create(user, false);
             }
             else return Tuple.Create(user, false);
+        }
+        public Tuple<List<string>, bool> CheckAdminLogin(DBConnector db, string email, string password)
+        {
+            List<string> output = new List<string>();
+            string query = "SELECT * FROM emailadmins WHERE email=@email";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.Parameters.AddWithValue("@email", email);
+            DataTable dTable = db.SqlSelectQuery(cmd);
+            if (dTable.Rows.Count > 0)
+            {
+                int userID = (int)dTable.Rows[0]["adminID"];
+                output.Add(dTable.Rows[0]["email"].ToString());
+                MySqlDataAdapter dtb = new MySqlDataAdapter();
+                query = "SELECT * FROM admins WHERE adminID=@adminID AND password=@password";
+                cmd = new MySqlCommand(query);
+                cmd.Parameters.AddWithValue("@adminID", userID);
+                cmd.Parameters.AddWithValue("@password", password);
+                dTable = db.SqlSelectQuery(cmd);
+                if (dTable.Rows.Count > 0)
+                {
+                    output.Add(dTable.Rows[0]["adminID"].ToString());
+
+                    return Tuple.Create(output, true);
+                }
+                else return Tuple.Create(output, false);
+            }
+            else return Tuple.Create(output, false);
         }
         public Tuple<UserModel, bool> CheckUserRegister(DBConnector db, UserModel user)
         {

@@ -44,3 +44,11 @@ function validateForm(form) {
 
     return true;
 }
+/*
+function viewName() {
+    var sPath = window.location.pathname;
+    var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+    alert(sPath);
+    alert(sPage);
+    document.getElementById("viewName").value = sPage;//href.match(/([^/])/$/)[1];
+};*/
