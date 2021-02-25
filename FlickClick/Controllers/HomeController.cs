@@ -31,7 +31,7 @@ namespace FlickClick.Controllers
             List<NewsModel> recentNews = new List<NewsModel>();
             List<PreviewMovieModel> ComingSoonTrailers = new List<PreviewMovieModel>();
 
-
+             
             //string query = @"SELECT * FROM movies ORDER BY releaseDate DESC LIMIT 6";
             string query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.ID = movies.movieID GROUP BY movieID ORDER BY releaseDate DESC LIMIT 6";
             DataTable dtable = dbc.sqlSelectQueryOld(query);

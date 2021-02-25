@@ -4,6 +4,7 @@
 
 @{
     ViewData["Stylesheet"] = "/css/movie.css";
+    ViewData["js"] = "/js/movie.js";
 }
 
 <div class="movie-bar">
@@ -57,10 +58,8 @@
     {
         <div class="movie-comments-input">
             Post a comment
-            <form>
-                <textarea class="movie-comments-text">Write a comment here..</textarea>
-                <input type="submit" />
-            </form>
+                <textarea id="comment" class="movie-comments-text">Write a comment here..</textarea>
+                <input id="commentInput" class="movie-comments-submit" type="submit" />
         </div>
     }
     else
@@ -74,14 +73,15 @@
         </div>
     }
 
-<div class="movie-comments-section">
-    @foreach (var item in Model.comments)
-    {
-        <div class="movie-comments-section-comment">
-            <div class="movie-comments-section-comment-user-date">
-                <p>@item.username&nbsp;<p class="c-red">@item.date</p>
+    <div id="comment-section" class="movie-comments-section">
+        @foreach (var item in Model.comments)
+        {
+            <div class="movie-comments-section-comment">
+                <div class="movie-comments-section-comment-user-date">
+                    <p>@item.username&nbsp;<p class="c-red">@item.date</p>
+                </div>
+                <p>@item.comment</p>
             </div>
-            <p>@item.comment</p>
-        </div>
-    }
+        }
+    </div>
 </div>
