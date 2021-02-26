@@ -1,43 +1,36 @@
-﻿@model FlickClick.Models.ContactModel;
+﻿@model List<NewsModel>
+
 @{
-    ViewData["Title"] = "Index";
-    ViewData["Stylesheet"] = "/css/contact.css";
+    ViewData["Stylesheet"] = "/css/news.css";
 }
 
-<div class="contentContainter">
-    <h2><b>Contact</b></h2>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In aliquam pretium ex ac interdum. Fusce ut pharetra nunc, vel varius justo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla a rutrum velit. Suspendisse tincidunt risus nec massa commodo, finibus tristique neque tincidunt. Ut ornare dictum libero, sit amet maximus velit blandit ac. Aliquam efficitur est ultricies arcu.
-    </p>
-    <div class="contactForm">
-        <div class="row">
-            <h3 class="contactFormTitle"><b>Get in touch</b></h3>
+<h3>News</h3>
+<div class="news-articles">
+    @foreach (var item in Model)
+    {
+        <div class="news-article">
+            <h6>@item.title</h6>
+            <small class="news-article-date">@item.postDate.ToString("dd-MM-yyyy")</small>
+            <p>
+                @if (@item.text.Length > 200)
+                {
+                    @item.text.Substring(0, 200)
+                }
+                else
+                {
+                    @item.text
+                }
+                <br />
+                <a asp-controller="View" asp-action="Article" asp-route-id="@item.ID" class="news-article-link">Read more</a>
+            </p>
+
         </div>
-        <div class="row">
-            <div class="contactFormBase">
-                @Html.AntiForgeryToken()
-                <form asp-action="Index">
-                    <div class="form-group">
-                        <input asp-for="contactName" placeholder="Your Name" maxlength="48" type="text" class="form-control" required />
-                        <span asp-validation-for="contactName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input asp-for="contactMail" placeholder="Your Email Address" maxlength="48" type="email" class="form-control" required />
-                        <span asp-validation-for="contactMail" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <textarea asp-for="message" placeholder="Your Message..." maxlength="1024" class="form-control" required>
-                        </textarea>
-                        <span asp-validation-for="message" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Send" class="btn btn-primary" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    }
 </div>
+
+
+
+
 
 <div class="movie-extra">
     <div class="movie-extra-halfitem">

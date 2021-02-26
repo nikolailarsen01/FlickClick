@@ -9,7 +9,5 @@ namespace FlickClick.Models
     {
         public List<PreviewMovieModel> releaseDateSort { get; set; }
         public List<PreviewMovieModel> commentCountSort { get; set; }
-        public List<NewsModel> postDateSort { get; set; }
-        public List<PreviewMovieModel> releaseDateComingSoonSort { get; set; }
-    }
+      }
 }

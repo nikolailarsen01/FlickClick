@@ -1,0 +1,19 @@
+﻿body {
+
+}
+
+.news-articles{
+    margin-bottom: 5%;
+}
+
+.news-article-date{
+    color: red;
+}
+
+.news-article-link {
+    color: red;
+}
+
+h6{
+    color:black !important;
+}

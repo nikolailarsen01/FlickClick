@@ -18,19 +18,19 @@
                 <img onclick="HomePage();" style="cursor: pointer;" src="~/assets/images/logo.png" />
                 <div class="layout-header-section-half right">
                     <a class="layout-header-section-half-item" asp-controller="Home" asp-action="Index">HOME</a>
-                    <a class="layout-header-section-half-item">NEWS</a>
+                    <a class="layout-header-section-half-item" asp-controller="View" asp-action="News">NEWS</a>
                     <a class="layout-header-section-half-item" asp-controller="Contact" asp-action="Index">CONTACT</a>
                 </div>
                 <div class="layout-header-section">
                     <div class="layout-header-section-half">
-                        <a class="layout-header-section-half-item">SHOW ALL</a>
-                        <a class="layout-header-section-half-item">LATEST TRAILERS</a>
-                        <a class="layout-header-section-half-item">MOST COMMENTED</a>
+                        <a asp-controller="View" asp-action="searchMovies" asp-route-id="?search=" class="layout-header-section-half-item">SHOW ALL</a>
+                        <a href="/View/Movies?filter=lastestTrailers" class="layout-header-section-half-item">LATEST TRAILERS</a>
+                        <a href="/View/Movies?filter=mostCommented" class="layout-header-section-half-item">MOST COMMENTED</a>
                     </div>
                     <div class="layout-header-section-half right">
-                        <form>
+                        <form method="get" action="/View/searchMovies">
                             <a>SEARCH</a>
-                            <input type="text" class="headerInput" placeholder="Enter search here" />
+                            <input type="text" name="search" class="headerInput" placeholder="Enter search here" />
                             <input type="submit" value="GO!" />
                         </form>
 

@@ -53,6 +53,7 @@ html, body {
 
 .layout-header-section-half-item {
     margin-right: 1%;
+    color: white !important;
 }
 
 button, input[type="submit"], input[type="reset"] {
@@ -93,4 +94,52 @@ button, input[type="submit"], input[type="reset"] {
 .mg{
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.movie-extra {
+    border-top: 2px dotted black;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5%;
+}
+
+.movie-extra-halfitem {
+    width: 48%;
+}
+
+.movie-extra-halfitem-header {
+}
+
+.movie-extra-halfitem-header-item {
+    color: black;
+    display: inline-block
+}
+
+.movie-extra-item {
+    margin-bottom: 2.5%;
+}
+
+.movie-extra-item-section {
+    display: flex;
+}
+
+.movie-extra-item-p {
+    margin: 0px;
+}
+
+.movie-extra-item-picture {
+    width: 25%;
+}
+
+.movie-extra-item-section-picture {
+    width: 17.5%;
+    padding-right: 1%;
+}
+
+.movie-extra-item-section-p {
+    margin: 0px;
+}
+
+h6{
+    color: red;
 }

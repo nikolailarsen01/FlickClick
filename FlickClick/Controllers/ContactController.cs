@@ -13,11 +13,16 @@ namespace FlickClick.Controllers
     {
         DBConnector db = new DBConnector();
         DBContact dbCont = new DBContact();
+        DBNewsAndUpcoming naum = new DBNewsAndUpcoming();
+
 
         // GET: ContactController
         public ActionResult Index()
         {
             ContactModel cont = new ContactModel();
+
+            NewsAndUpcomingModel nm = naum.NewsAndUpcoming(db);
+            ViewBag.NewsAndUpcoming = nm;
             return View(cont);
         }
         [HttpPost]

@@ -3,6 +3,9 @@
 
 // Write your JavaScript code.
 
+function LoadNewsAndComingSoon() {
+
+}
 
 function HomePage() {
     window.location.href = "/Home";
@@ -43,4 +46,8 @@ function validateForm(form) {
     }
 
     return true;
+}
+
+function search() {
+    window.location.href = "/View/Movies/" + document.getElementById("search").value;
 }

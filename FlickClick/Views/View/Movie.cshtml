@@ -58,8 +58,8 @@
     {
         <div class="movie-comments-input">
             Post a comment
-                <textarea id="comment" class="movie-comments-text">Write a comment here..</textarea>
-                <input id="commentInput" class="movie-comments-submit" type="submit" />
+            <textarea id="comment" class="movie-comments-text">Write a comment here..</textarea>
+            <input id="commentInput" class="movie-comments-submit" type="submit" />
         </div>
     }
     else
@@ -68,7 +68,7 @@
             Post a comment
             <form>
                 <textarea class="movie-comments-text" disabled>Log in or sign up to write a comment</textarea>
-                <input class="movie-comments-submit" type="submit" disabled/>
+                <input class="movie-comments-submit" type="submit" disabled />
             </form>
         </div>
     }
@@ -81,6 +81,64 @@
                     <p>@item.username&nbsp;<p class="c-red">@item.date</p>
                 </div>
                 <p>@item.comment</p>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="movie-extra">
+    <div class="movie-extra-halfitem">
+        <div class="movie-extra-halfitem-header">
+            <p class="movie-extra-halfitem-header-item">NEWS</p>
+            <a class="movie-extra-halfitem-header-item right ul" asp-controller="View" asp-action="News">Show all</a>
+
+
+        </div>
+        @foreach (var item in (ViewBag.NewsAndUpcoming.News as List<NewsModel>))
+        {
+            <div class="movie-extra-item">
+                <small>@item.postDate.ToString("dd-mm-yyyy")</small>
+                <h6>@item.title</h6>
+                <p class="movie-extra-item-p">
+                    @if (@item.text.Length > 200)
+                    {
+                        @item.text.Substring(0, 200)
+                    }
+                    else
+                    {
+                        @item.text
+                    }
+                </p>
+                <a class="ul" asp-controller="View" asp-action="Article" asp-route-id="@item.ID">Read more</a>
+            </div>
+        }
+    </div>
+    <div class="movie-extra-halfitem">
+        <div class="movie-extra-halfitem-header">
+            <p class="movie-extra-halfitem-header-item">COMING SOON!</p>
+            <a class="movie-extra-halfitem-header-item right ul" asp-controller="View" asp-action="searchMovies" asp-route-id="?search=">Show all</a>
+        </div>
+        @foreach (var item in (ViewBag.NewsAndUpcoming.ComingSoon as List<PreviewMovieModel>))
+        {
+            <div class="movie-extra-item">
+                <small>@item.releaseDate.ToString("dd-mm-yyyy")</small>
+                <h6>@item.title</h6>
+                <div class="movie-extra-item-section">
+                    <img class="movie-extra-item-section-picture" src="@item.picturePath" />
+                    <div>
+                        <p class="movie-extra-item-section-p">
+                            @if (@item.description.Length > 200)
+                            {
+                                @item.description.Substring(0, 200)
+                            }
+                            else
+                            {
+                                @item.description
+                            }
+                        </p>
+                        <a class="ul" asp-controller="View" asp-action="Movie" asp-route-id="@item.movieID">Read more</a>
+                    </div>
+                </div>
             </div>
         }
     </div>

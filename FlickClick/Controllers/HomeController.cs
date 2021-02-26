@@ -1,4 +1,5 @@
-﻿using FlickClick.Models;
+﻿using FlickClick.BL;
+using FlickClick.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,8 @@ namespace FlickClick.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        DBConnector dbc = new DBConnector();
+        DBConnector db = new DBConnector();
+        DBNewsAndUpcoming naum = new DBNewsAndUpcoming();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -28,13 +30,10 @@ namespace FlickClick.Controllers
 
             List<PreviewMovieModel> recentTrailers = new List<PreviewMovieModel>();
             List<PreviewMovieModel> commentCountTrailers = new List<PreviewMovieModel>();
-            List<NewsModel> recentNews = new List<NewsModel>();
-            List<PreviewMovieModel> ComingSoonTrailers = new List<PreviewMovieModel>();
 
-             
-            //string query = @"SELECT * FROM movies ORDER BY releaseDate DESC LIMIT 6";
-            string query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.ID = movies.movieID GROUP BY movieID ORDER BY releaseDate DESC LIMIT 6";
-            DataTable dtable = dbc.sqlSelectQueryOld(query);
+            
+            string query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.movieID = movies.movieID GROUP BY movies.movieID ORDER BY releaseDate DESC LIMIT 6";
+            DataTable dtable = db.sqlSelectQueryOld(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
                 PreviewMovieModel pmm = new PreviewMovieModel();
@@ -46,8 +45,8 @@ namespace FlickClick.Controllers
                 recentTrailers.Add(pmm);
             }
 
-            query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.ID = movies.movieID GROUP BY movieID ORDER BY Count(*) DESC LIMIT 6";
-            dtable = dbc.sqlSelectQueryOld(query);
+            query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.movieID = movies.movieID GROUP BY movies.movieID ORDER BY Count(*) DESC LIMIT 6";
+            dtable = db.sqlSelectQueryOld(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
                 PreviewMovieModel pmm = new PreviewMovieModel();
@@ -59,46 +58,16 @@ namespace FlickClick.Controllers
                 commentCountTrailers.Add(pmm);
             }
 
-            query = @"SELECT * FROM news ORDER BY postDate DESC LIMIT 2";
-            dtable = dbc.sqlSelectQueryOld(query);
-            for (int i = 0; i < dtable.Rows.Count; i++)
-            {
-                NewsModel nw = new NewsModel();
-                nw.ID = (int)dtable.Rows[i]["ID"];
-                nw.title = dtable.Rows[i]["title"].ToString();
-                nw.text = dtable.Rows[i]["text"].ToString();
-                nw.postDate = (DateTime)dtable.Rows[i]["postDate"];
-                recentNews.Add(nw);
-            }
-
-            query = @"SELECT * FROM movies WHERE ComingSoon='1' ORDER BY releaseDate LIMIT 2";
-            dtable = dbc.sqlSelectQueryOld(query);
-            for (int i = 0; i < dtable.Rows.Count; i++)
-            {
-                PreviewMovieModel pmm = new PreviewMovieModel();
-                pmm.movieID = (int)dtable.Rows[i]["movieId"];
-                pmm.title = dtable.Rows[i]["title"].ToString();
-                pmm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
-                pmm.description = dtable.Rows[i]["description"].ToString();
-                pmm.picturePath = dtable.Rows[i]["picturePath"].ToString();
-                ComingSoonTrailers.Add(pmm);
-            }
-
 
             data.releaseDateSort = recentTrailers;
             data.commentCountSort = commentCountTrailers;
-            data.postDateSort = recentNews;
-            data.releaseDateComingSoonSort = ComingSoonTrailers;
+
+            NewsAndUpcomingModel nm = naum.NewsAndUpcoming(db);
+            ViewBag.NewsAndUpcoming = nm;
 
             return View(data);
         }
 
-        public IActionResult Privacy()
-        {
-            
-
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
