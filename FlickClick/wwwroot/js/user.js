@@ -1,0 +1,1 @@
+﻿$('#Comments').load("/User/Comments");  

@@ -17,9 +17,71 @@ namespace FlickClick.Controllers
         DBUser dbUser = new DBUser();
         public ActionResult Index() 
         {
+            UserModel um = new UserModel();
+            int userID = (int)HttpContext.Session.GetInt32("userID");
 
-            ViewBag.userID = HttpContext.Session.GetInt32("userID");
+            string query = "SELECT users.userID, firstnames.firstName, lastnames.lastName, emailusers.email, citycodes.postalCode, streetnames.streetName, addressjunction.houseNumber, phoneNumber, profilePicPath, userSince FROM `users` INNER JOIN firstnames ON users.firstNameID = firstnames.firstNameID INNER JOIN lastnames ON users.lastNameID = lastnames.lastNameID INNER JOIN addressjunction ON users.addressID = addressjunction.ID INNER JOIN citycodes ON addressjunction.cityID = citycodes.cityID INNER JOIN streetnames ON addressjunction.streetID = streetnames.streetID INNER JOIN emailusers ON users.userID = emailusers.userID WHERE users.userID='"+userID+"'";
+            MySqlCommand cmd = new MySqlCommand(query);
+            DataTable dtb = db.SqlSelectQuery(cmd);
+            for (int i = 0; i < dtb.Rows.Count; i++)
+            {
 
+                um.userID = (int)dtb.Rows[i]["userID"];
+                um.firstName = dtb.Rows[i]["firstName"].ToString();
+                um.lastName = dtb.Rows[i]["lastName"].ToString();
+                um.email = dtb.Rows[i]["email"].ToString();
+                um.postalCode = (int)dtb.Rows[i]["postalCode"];
+                um.streetName = dtb.Rows[i]["streetName"].ToString();
+                um.houseNumber = dtb.Rows[i]["houseNumber"].ToString();
+                um.phoneNumber = Convert.ToInt32(dtb.Rows[i]["phoneNumber"]);
+                um.profilePicPath = dtb.Rows[i]["profilePicPath"].ToString();
+                um.userSince = (DateTime)dtb.Rows[i]["userSince"];
+            }
+            return View(um);
+        }
+
+        public ActionResult Edit()
+        {
+            UserModel um = new UserModel();
+            int userID = (int)HttpContext.Session.GetInt32("userID");
+
+            string query = "SELECT users.userID, firstnames.firstName, lastnames.lastName, emailusers.email, citycodes.postalCode, streetnames.streetName, addressjunction.houseNumber, phoneNumber, profilePicPath, userSince FROM `users` INNER JOIN firstnames ON users.firstNameID = firstnames.firstNameID INNER JOIN lastnames ON users.lastNameID = lastnames.lastNameID INNER JOIN addressjunction ON users.addressID = addressjunction.ID INNER JOIN citycodes ON addressjunction.cityID = citycodes.cityID INNER JOIN streetnames ON addressjunction.streetID = streetnames.streetID INNER JOIN emailusers ON users.userID = emailusers.userID WHERE users.userID='" + userID + "'";
+            MySqlCommand cmd = new MySqlCommand(query);
+            DataTable dtb = db.SqlSelectQuery(cmd);
+            for (int i = 0; i < dtb.Rows.Count; i++)
+            {
+                um.firstName = dtb.Rows[i]["firstName"].ToString();
+                um.lastName = dtb.Rows[i]["lastName"].ToString();
+                um.email = dtb.Rows[i]["email"].ToString();
+                um.postalCode = (int)dtb.Rows[i]["postalCode"];
+                um.streetName = dtb.Rows[i]["streetName"].ToString();
+                um.houseNumber = dtb.Rows[i]["houseNumber"].ToString();
+                um.phoneNumber = Convert.ToInt32(dtb.Rows[i]["phoneNumber"]);
+            }
+            return View(um);
+        }
+
+        public ActionResult Comments()
+        {
+            List<CommentModel> data = new List<CommentModel>();
+            string query = "SELECT movies.title, comments.text, comments.postDate FROM `commentjunction` INNER JOIN comments ON commentjunction.commentID = comments.commentID INNER JOIN movies ON commentjunction.movieID = movies.movieID WHERE comments.userID='"+ (int)HttpContext.Session.GetInt32("userID") +"'";
+            MySqlCommand cmd = new MySqlCommand(query);
+            DataTable dtb = db.SqlSelectQuery(cmd);
+            for (int i = 0; i < dtb.Rows.Count; i++)
+            {
+                CommentModel cm = new CommentModel();
+                cm.username = dtb.Rows[i]["title"].ToString();
+                cm.date = DateTime.Parse(dtb.Rows[i]["postDate"].ToString()).ToString("dd-MM-yyyy");
+                cm.comment = dtb.Rows[i]["text"].ToString();
+                data.Add(cm);
+            }
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public ActionResult EditUpdate()
+        {
 
             return View();
         }
@@ -93,11 +155,6 @@ namespace FlickClick.Controllers
             user.phoneNumber = Int32.Parse(HttpContext.Request.Form["phoneNumber"]);
 
             dbUser.CheckUserRegister(db, user);
-            return View();
-        }
-
-        public ActionResult UserPage()
-        {
             return View();
         }
     }
