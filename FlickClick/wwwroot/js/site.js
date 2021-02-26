@@ -7,6 +7,8 @@ function LoadNewsAndComingSoon() {
 
 }
 
+$("#NewsAndUpcoming").load("/View/NewsAndUpcoming");
+
 function HomePage() {
     window.location.href = "/Home";
 }

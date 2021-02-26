@@ -191,5 +191,14 @@ namespace FlickClick.Controllers
             return result;
         }
 
+
+        public IActionResult NewsAndUpcoming()
+        {
+            DBNewsAndUpcoming dbnu = new DBNewsAndUpcoming();
+            NewsAndUpcomingModel naum = dbnu.NewsAndUpcoming(db);
+
+            return View(naum); ;
+        }
+
     }
 }

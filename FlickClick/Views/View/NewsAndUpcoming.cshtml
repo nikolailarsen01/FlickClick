@@ -1,0 +1,63 @@
+﻿@model NewsAndUpcomingModel
+
+@{
+    Layout = null;
+}
+
+
+    <div class="movie-extra-halfitem">
+        <div class="movie-extra-halfitem-header">
+            <p class="movie-extra-halfitem-header-item">NEWS</p>
+            <a class="movie-extra-halfitem-header-item right ul" asp-controller="View" asp-action="News">Show all</a>
+
+
+        </div>
+        @foreach (var item in Model.News)
+        {
+            <div class="movie-extra-item">
+                <small>@item.postDate.ToString("dd-mm-yyyy")</small>
+                <h6>@item.title</h6>
+                <p class="movie-extra-item-p">
+                    @if (@item.text.Length > 200)
+                    {
+                        @item.text.Substring(0, 200)
+                    }
+                    else
+                    {
+                        @item.text
+                    }
+                </p>
+                <a class="ul" asp-controller="View" asp-action="Article" asp-route-id="@item.ID">Read more</a>
+            </div>
+        }
+    </div>
+    <div class="movie-extra-halfitem">
+        <div class="movie-extra-halfitem-header">
+            <p class="movie-extra-halfitem-header-item">COMING SOON!</p>
+            <a class="movie-extra-halfitem-header-item right ul" asp-controller="View" asp-action="searchMovies" asp-route-id="?search=">Show all</a>
+        </div>
+        @foreach (var item in Model.ComingSoon)
+        {
+            <div class="movie-extra-item">
+                <small>@item.releaseDate.ToString("dd-mm-yyyy")</small>
+                <h6>@item.title</h6>
+                <div class="movie-extra-item-section">
+                    <img class="movie-extra-item-section-picture" src="@item.picturePath" />
+                    <div>
+                        <p class="movie-extra-item-section-p">
+                            @if (@item.description.Length > 200)
+                            {
+                                @item.description.Substring(0, 200)
+                            }
+                            else
+                            {
+                                @item.description
+                            }
+                        </p>
+                        <a class="ul" asp-controller="View" asp-action="Movie" asp-route-id="@item.movieID">Read more</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
