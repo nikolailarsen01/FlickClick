@@ -47,6 +47,7 @@
                         <form method="post" action="/User/ValidateLogin">
                             <input name="email" class="headerInput" type="email" placeholder="Email" />
                             <input name="password" class="headerInput" type="password" placeholder="password" />
+                            <input hidden name="controller" value="@ViewContext.RouteData.Values["controller"]" />
                             <input type="submit" value="Sign in" />
                         </form>
                         <a class="mg" href="User/Register">Not a member?</a>

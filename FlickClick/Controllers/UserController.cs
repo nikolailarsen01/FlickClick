@@ -30,7 +30,8 @@ namespace FlickClick.Controllers
             UserModel user = new UserModel();
             string email = HttpContext.Request.Form["email"];
             string password = HttpContext.Request.Form["password"];
-            string salt = dbUser.GetSalt(db, email);
+            string currentController = HttpContext.Request.Form["controller"];
+            string salt = dbUser.GetSalt(db, email, "user");
             if(salt != "empty")
             {
                 string hashedPassword = dbUser.HashPassword(password, salt);
@@ -40,17 +41,35 @@ namespace FlickClick.Controllers
                     user = result.Item1;
                     HttpContext.Session.SetInt32("userID", user.userID);
                     HttpContext.Session.SetString("firstName", user.firstName);
-                    ViewBag.userID = HttpContext.Session.GetInt32("userID");
+                    HttpContext.Session.SetInt32("isAdmin", 0);
                     return View(user);
                 }
                 else
                 {
-                    return View();
+                    return RedirectToAction("Index", currentController);
                 }
             }
             else
             {
-                return View();
+                salt = dbUser.GetSalt(db, email, "admin");
+                if (salt != "empty")
+                {
+                    string hashedPassword = dbUser.HashPassword(password, salt);
+                    var result = dbUser.CheckAdminLogin(db, email, hashedPassword);
+                    if (result.Item2 == true)
+                    {
+                        
+                        HttpContext.Session.SetString("email", result.Item1[0]);
+                        HttpContext.Session.SetInt32("adminID", Int32.Parse(result.Item1[1]));
+                        HttpContext.Session.SetInt32("isAdmin", 1);
+                        return RedirectToAction("Index", "Cms");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", currentController);
+                    }
+                }
+                else return RedirectToAction("Index", currentController);
             }
         }
 

@@ -1,0 +1,38 @@
+﻿@model FlickClick.Models.NewsModel
+
+@{
+    ViewData["Title"] = "Admin Panel: News Add";
+}
+
+<h1>Add</h1>
+
+<h4>News</h4>
+<hr />
+<div class="contentContainter">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="title" class="control-label"></label>
+                    <input asp-for="title" type="text" maxlength="64" class="form-control" required />
+                    <span asp-validation-for="title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="text" class="control-label"></label>
+                    <textarea asp-for="text" maxlength="1024" class="form-control" required>
+                    </textarea>
+                    <span asp-validation-for="text" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to list</a>
+    </div>
+</div>

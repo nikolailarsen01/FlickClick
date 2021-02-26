@@ -1,0 +1,54 @@
+﻿@model IEnumerable<FlickClick.Models.NewsModel>
+@{
+    ViewData["Title"] = "Admin Panel: News";
+    ViewData["Stylesheet"] = "/css/cms.css";
+}
+
+<div>
+    <div class="contentContainter">
+        <h1>
+            News
+        </h1>
+        <div class="sideLinks">
+            <a asp-controller="Cms" asp-action="Index">Back to admin panel</a>
+            <a asp-action="Create">Add news</a>
+        </div>
+        @foreach (var item in Model)
+        {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => item.ID)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => item.ID)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => item.title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => item.title)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => item.text)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => item.text)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => item.postDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => item.postDate)
+                </dd>
+            </dl>
+            <div class="listForm">
+                <form asp-action="Edit" asp-route-id="@item.ID" method="get">
+                    <input type="submit" name="submit" value="Edit">
+                </form>
+                <form asp-action="Delete" asp-route-id="@item.ID" method="get">
+                    <input type="submit" name="submit" value="Delete">
+                </form>
+            </div>
+        }
+    </div>
+</div> 
