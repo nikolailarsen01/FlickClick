@@ -1,0 +1,2 @@
+﻿RewriteEngine on
+ErrorDocument 404 https://localhost/Error404.html

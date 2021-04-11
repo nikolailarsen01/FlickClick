@@ -7,7 +7,7 @@
 
     <div class="movie-extra-halfitem">
         <div class="movie-extra-halfitem-header">
-            <p class="movie-extra-halfitem-header-item">NEWS</p>
+            <p class="movie-extra-halfitem-header-item"><b>NEWS</b></p>
             <a class="movie-extra-halfitem-header-item right ul" asp-controller="View" asp-action="News">Show all</a>
 
 
@@ -33,7 +33,7 @@
     </div>
     <div class="movie-extra-halfitem">
         <div class="movie-extra-halfitem-header">
-            <p class="movie-extra-halfitem-header-item">COMING SOON!</p>
+            <p class="movie-extra-halfitem-header-item"><b>COMING SOON<span style="color:red;">!</span></b></p>
             <a class="movie-extra-halfitem-header-item right ul" asp-controller="View" asp-action="searchMovies" asp-route-id="?search=">Show all</a>
         </div>
         @foreach (var item in Model.ComingSoon)

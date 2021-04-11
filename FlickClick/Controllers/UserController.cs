@@ -27,6 +27,7 @@ namespace FlickClick.Controllers
         [HttpPost]
         public ActionResult ValidateLogin()
         {
+            HttpContext.Session.SetString("loginError", "null");
             UserModel user = new UserModel();
             string email = HttpContext.Request.Form["email"];
             string password = HttpContext.Request.Form["password"];
@@ -46,6 +47,7 @@ namespace FlickClick.Controllers
                 }
                 else
                 {
+                    HttpContext.Session.SetString("loginError", "Could not login");
                     return RedirectToAction("Index", currentController);
                 }
             }
@@ -58,7 +60,7 @@ namespace FlickClick.Controllers
                     var result = dbUser.CheckAdminLogin(db, email, hashedPassword);
                     if (result.Item2 == true)
                     {
-                        
+
                         HttpContext.Session.SetString("email", result.Item1[0]);
                         HttpContext.Session.SetInt32("adminID", Int32.Parse(result.Item1[1]));
                         HttpContext.Session.SetInt32("isAdmin", 1);
@@ -66,10 +68,15 @@ namespace FlickClick.Controllers
                     }
                     else
                     {
+                        HttpContext.Session.SetString("loginError", "Could not login");
                         return RedirectToAction("Index", currentController);
                     }
                 }
-                else return RedirectToAction("Index", currentController);
+                else
+                {
+                    HttpContext.Session.SetString("loginError", "Could not login");
+                    return RedirectToAction("Index", currentController);
+                }
             }
         }
 

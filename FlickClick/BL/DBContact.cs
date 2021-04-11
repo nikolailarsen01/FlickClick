@@ -28,6 +28,19 @@ namespace FlickClick.BL
             }
             return contacts;
         }
+        public ContactModel GetOne(DBConnector db, int id)
+        {
+            ContactModel contact = new ContactModel();
+            string query = "SELECT * FROM contact WHERE ID=@ID";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.Parameters.AddWithValue("@ID", id);
+            DataTable dTable = db.SqlSelectQuery(cmd);
+            contact.ID = (int)dTable.Rows[0]["ID"];
+            contact.contactName = dTable.Rows[0]["contactName"].ToString();
+            contact.contactMail = dTable.Rows[0]["contactMail"].ToString();
+            contact.message = dTable.Rows[0]["message"].ToString();
+            return contact;
+        }
         public void Insert(DBConnector db, ContactModel contact)
         {
             string query = "INSERT INTO `contact` (`contactName`, `contactMail`, `message`)" +
@@ -38,6 +51,13 @@ namespace FlickClick.BL
             cmd.Parameters.AddWithValue("@contactMail", contact.contactMail);
             cmd.Parameters.AddWithValue("@message", contact.message);
             db.sqlUpdateOrInsertQuery(cmd);
+        }
+        public void Delete(DBConnector db, int id)
+        {
+            string query = "DELETE FROM `contact` WHERE ID=@ID";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.Parameters.AddWithValue("@ID", id);
+            db.sqlDeleteQuery(cmd);
         }
     }
 }

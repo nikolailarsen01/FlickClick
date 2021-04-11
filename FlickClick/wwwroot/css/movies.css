@@ -21,7 +21,6 @@
 .movie-banners-items {
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
     margin-bottom: 5%;
 }
 

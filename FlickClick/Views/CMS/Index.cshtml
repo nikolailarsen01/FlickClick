@@ -1,7 +1,8 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Admin Panel";
     ViewData["Stylesheet"] = "/css/cms.css";
+    Layout = "~/Views/Shared/_CmsLayout.cshtml";
+    Url.Action("Index", "Home");
 }
 
 <h1>Admin Panel</h1>
@@ -15,5 +16,6 @@
         <a asp-controller="Writers" asp-action="Index">Writers</a>
         <a asp-controller="MovieRelations" asp-action="Index">Movie Relations</a>
         <a asp-controller="News" asp-action="Index">News</a>
+        <a asp-controller="Contact" asp-action="Details">Received Messages</a>
     </div>
 </div>

@@ -11,7 +11,8 @@ namespace FlickClick.Controllers
     {
         // GET: CmsController
         public ActionResult Index()
-        {
+        {          
+            int? xd = HttpContext.Session.GetInt32("isAdmin");
             return View();
         }
 

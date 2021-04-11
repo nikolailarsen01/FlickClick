@@ -17,5 +17,6 @@ namespace FlickClick.Models
         public int ageRating { get; set; }
         public string comingSoon { get; set; }
         public string picturePath { get; set; }
+        public string trailerPath { get; set; }
     }
 }
