@@ -110,7 +110,7 @@ namespace FlickClick.Controllers
                     HttpContext.Session.SetInt32("userID", user.userID);
                     HttpContext.Session.SetString("firstName", user.firstName);
                     HttpContext.Session.SetInt32("isAdmin", 0);
-                    return View(user);
+                    return RedirectToAction("Index");
                 }
                 else
                 {
@@ -146,6 +146,14 @@ namespace FlickClick.Controllers
                 }
             }
         }
+        public ActionResult Logout()
+        {
+            HttpContext.Session.SetString("loginError", "You logged out");
+            HttpContext.Session.SetInt32("userID", 0);
+            HttpContext.Session.SetString("firstName", "");
+            HttpContext.Session.SetInt32("isAdmin", 0);
+            return RedirectToAction("Index", "Home");
+        }
 
         public ActionResult Register()
         {
@@ -156,6 +164,7 @@ namespace FlickClick.Controllers
         [HttpPost]
         public ActionResult ValidateRegister(UserCreateModel userCreate)
         {
+            HttpContext.Session.SetString("loginError", "null");
             UserModel user = new UserModel();
             user.firstName = HttpContext.Request.Form["firstName"];
             user.lastName = HttpContext.Request.Form["lastName"];
@@ -168,7 +177,20 @@ namespace FlickClick.Controllers
             user.profilePic = userCreate.profilePic;
 
             var result = dbUser.CheckUserRegisterAsync(db, user);
-            return View();
+
+            if(result.Result.Item2 == false )
+            {
+                HttpContext.Session.SetString("loginError", "The used email is already in use");
+                return View();
+            }
+            else
+            {
+                user = result.Result.Item1;
+                HttpContext.Session.SetInt32("userID", user.userID);
+                HttpContext.Session.SetString("firstName", user.firstName);
+                HttpContext.Session.SetInt32("isAdmin", 0);
+                return Index();
+            }
         }
 
         public ActionResult UserPage()

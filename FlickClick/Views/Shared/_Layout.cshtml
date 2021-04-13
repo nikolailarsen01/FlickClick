@@ -39,17 +39,17 @@
                 <div class="layout-header-section-whole right">
                     @if (@HttpContextAccessor.HttpContext.Session.GetInt32("userID") > 0)
                     {
-                        <a class="mg" asp-controller="User" asp-action="Index" >Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>
-                        <a class="mg" href="User/Logout">Log ud</a>
+                        <a class="mg" asp-controller="User" asp-action="Index" >Welcome @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>
+                        <a class="mg" asp-controller="User" asp-action="Logout">Log out</a>
                     }
                     else if (@HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
                     {
-                        <a class="mg" asp-controller="Cms" asp-action="Index">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
-                        <a class="mg" href="User/Logout">Log ud</a>
+                        <a class="mg" asp-controller="Cms" asp-action="Index">Welcome @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
+                        <a class="mg" asp-controller="User" asp-action="Logout">Log out</a>
                     }
                     else
                     {
-                        <form method="post" action="/User/ValidateLogin">
+                        <form method="post" asp-controller="User" asp-action="ValidateLogin">
                             <input name="email" class="headerInput" type="email" placeholder="Email" />
                             <input name="password" class="headerInput" type="password" placeholder="password" />
                             <input hidden name="controller" value="@ViewContext.RouteData.Values["controller"]" />

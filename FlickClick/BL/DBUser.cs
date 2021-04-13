@@ -15,6 +15,7 @@ namespace FlickClick.BL
     public class DBUser
     {
         private readonly IWebHostEnvironment rootPath;
+        public DBUser() { }
         public DBUser(IWebHostEnvironment env)
         {
             rootPath = env;
@@ -278,6 +279,28 @@ namespace FlickClick.BL
                 await user.profilePic.CopyToAsync(fileStream);
             }
             return profilePicPath;
+        }
+        public List<UserModel> getAll(DBConnector db)
+        {
+            List<UserModel> userList = new List<UserModel>();
+            string query = "SELECT users.userID, firstnames.firstName, lastnames.lastName, emailusers.email, citycodes.postalCode, streetnames.streetName, addressjunction.houseNumber, phoneNumber, profilePicPath, userSince FROM `users` INNER JOIN firstnames ON users.firstNameID = firstnames.firstNameID INNER JOIN lastnames ON users.lastNameID = lastnames.lastNameID INNER JOIN addressjunction ON users.addressID = addressjunction.ID INNER JOIN citycodes ON addressjunction.cityID = citycodes.cityID INNER JOIN streetnames ON addressjunction.streetID = streetnames.streetID INNER JOIN emailusers ON users.userID = emailusers.userID";
+            DataTable dTable = db.sqlSelectQueryOld(query);
+            for (int i = 0; i < dTable.Rows.Count; i++)
+            {
+                UserModel um = new UserModel();
+                um.userID = (int)dTable.Rows[i]["userID"];
+                um.firstName = dTable.Rows[i]["firstName"].ToString();
+                um.lastName = dTable.Rows[i]["lastName"].ToString();
+                um.email = dTable.Rows[i]["email"].ToString();
+                um.postalCode = (int)dTable.Rows[i]["postalCode"];
+                um.streetName = dTable.Rows[i]["streetName"].ToString();
+                um.houseNumber = dTable.Rows[i]["houseNumber"].ToString();
+                um.phoneNumber = Convert.ToInt32(dTable.Rows[i]["phoneNumber"]);
+                um.profilePicPath = dTable.Rows[i]["profilePicPath"].ToString();
+                um.userSince = (DateTime)dTable.Rows[i]["userSince"];
+                userList.Add(um);
+            }
+            return userList;
         }
     }
 }

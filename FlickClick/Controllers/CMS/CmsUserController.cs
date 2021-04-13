@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FlickClick.Models;
+using FlickClick.BL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,10 +11,13 @@ namespace FlickClick.Controllers.CMS
 {
     public class CmsUserController : Controller
     {
+        DBConnector db = new DBConnector();
+        DBUser dbUser = new DBUser();
         // GET: CmsUserController
         public ActionResult Index()
         {
-            return View();
+            List<UserModel> userList = dbUser.getAll(db); 
+            return View(userList);
         }
 
         // GET: CmsUserController/Details/5
