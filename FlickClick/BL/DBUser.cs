@@ -1,8 +1,10 @@
 ﻿using FlickClick.Models;
+using Microsoft.AspNetCore.Hosting;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,6 +14,11 @@ namespace FlickClick.BL
 {
     public class DBUser
     {
+        private readonly IWebHostEnvironment rootPath;
+        public DBUser(IWebHostEnvironment env)
+        {
+            rootPath = env;
+        }
         public string GenerateSalt()
         {
             var bytes = new byte[128 / 8];
@@ -107,7 +114,7 @@ namespace FlickClick.BL
             }
             else return Tuple.Create(output, false);
         }
-        public Tuple<UserModel, bool> CheckUserRegister(DBConnector db, UserModel user)
+        public async Task<Tuple<UserModel, bool>> CheckUserRegisterAsync(DBConnector db, UserModel user)
         {
             int postalCodeID = 0;
             int streetNameID = 0;
@@ -220,8 +227,9 @@ namespace FlickClick.BL
             }
             else
             {
-                query = "INSERT INTO `users`(`firstNameID`, `lastNameID`, `addressID`, `password`, `passwordSalt`, `phoneNumber`, `userSince`)" +
-                " VALUES (@firstNameID, @lastNameID, @addressID, @password, @passwordSalt, @phoneNumber, @userSince)";
+                string profilePicPath = await saveProfilePicAsync(user);
+                query = "INSERT INTO `users`(`firstNameID`, `lastNameID`, `addressID`, `password`, `passwordSalt`, `phoneNumber`, `profilePicPath`, `userSince`)" +
+                " VALUES (@firstNameID, @lastNameID, @addressID, @password, @passwordSalt, @phoneNumber, @profilePicPath, @userSince)";
                 cmd = new MySqlCommand(query);
                 String salt = GenerateSalt();
                 cmd.Parameters.AddWithValue("@firstNameID", firstNameID);
@@ -230,6 +238,7 @@ namespace FlickClick.BL
                 cmd.Parameters.AddWithValue("@password", HashPassword(user.password, salt));
                 cmd.Parameters.AddWithValue("@passwordSalt", salt);
                 cmd.Parameters.AddWithValue("@phoneNumber", user.phoneNumber);
+                cmd.Parameters.AddWithValue("@profilePicPath", profilePicPath);
                 cmd.Parameters.AddWithValue("@userSince", DateTime.Now.ToString("yyyy-MM-dd"));
                 db.sqlUpdateOrInsertQuery(cmd);
 
@@ -241,6 +250,34 @@ namespace FlickClick.BL
                 db.sqlUpdateOrInsertQuery(cmd);
                 return Tuple.Create(user, true);
             }
+        }
+        private async System.Threading.Tasks.Task<string> saveProfilePicAsync(UserModel user)
+        {
+            //Save picture
+            string rawRootPath = rootPath.WebRootPath;
+            string wwwRootPath = "";
+            foreach (char c in rawRootPath)
+            {
+                if (c.ToString() == "\u005C")
+                {
+                    wwwRootPath += "/";
+                }
+                else wwwRootPath += c.ToString();
+            }
+            string fileName = "";
+            foreach (char c in user.email)
+            {
+                if (c == '@') fileName += "at";
+                else fileName += c.ToString();
+            }
+            string extension = Path.GetExtension(user.profilePic.FileName);
+            string profilePicPath = "/assets/profile-pictures/" + fileName + extension;
+            string path = Path.Combine(wwwRootPath + profilePicPath);
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await user.profilePic.CopyToAsync(fileStream);
+            }
+            return profilePicPath;
         }
     }
 }

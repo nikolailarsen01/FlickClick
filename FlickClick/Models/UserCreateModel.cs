@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,5 +18,6 @@ namespace FlickClick.Models
         public string password { get; set; }
         public string confirmPassword { get; set; }
         public int phoneNumber { get; set; }
+        public IFormFile profilePic { get; set; }
     }
 }

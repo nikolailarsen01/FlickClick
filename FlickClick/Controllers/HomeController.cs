@@ -31,8 +31,8 @@ namespace FlickClick.Controllers
             List<PreviewMovieModel> recentTrailers = new List<PreviewMovieModel>();
             List<PreviewMovieModel> commentCountTrailers = new List<PreviewMovieModel>();
 
-            
-            string query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.movieID = movies.movieID GROUP BY movies.movieID ORDER BY releaseDate DESC LIMIT 6";
+            string query = "SELECT movies.movieID as ID, movies.title, movies.releaseDate, movies.description, movies.picturePath, COUNT(commentjunction.movieID) AS Count FROM movies LEFT JOIN commentjunction ON movies.movieID = commentjunction.movieID GROUP BY movies.movieID ORDER BY releaseDate DESC LIMIT 6";
+            //string query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.movieID = movies.movieID GROUP BY movies.movieID ORDER BY releaseDate DESC LIMIT 6";
             DataTable dtable = db.sqlSelectQueryOld(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
@@ -41,11 +41,11 @@ namespace FlickClick.Controllers
                 pmm.title = dtable.Rows[i]["title"].ToString();
                 pmm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
                 pmm.picturePath = dtable.Rows[i]["picturePath"].ToString();
-                pmm.commentsCount = Convert.ToInt32(dtable.Rows[i]["Count(*)"]);
+                pmm.commentsCount = Convert.ToInt32(dtable.Rows[i]["Count"]);
                 recentTrailers.Add(pmm);
             }
 
-            query = @"SELECT commentjunction.movieID, movies.movieID as ID, movies.title, movies.picturePath, movies.releaseDate, COUNT(*) FROM commentjunction INNER JOIN movies ON commentjunction.movieID = movies.movieID GROUP BY movies.movieID ORDER BY Count(*) DESC LIMIT 6";
+            query = @"SELECT movies.movieID as ID, movies.title, movies.releaseDate, movies.description, movies.picturePath, COUNT(commentjunction.movieID) as Count FROM movies LEFT JOIN commentjunction ON movies.movieID = commentjunction.movieID GROUP BY movies.movieID ORDER BY Count DESC LIMIT 6";
             dtable = db.sqlSelectQueryOld(query);
             for (int i = 0; i < dtable.Rows.Count; i++)
             {
@@ -54,7 +54,7 @@ namespace FlickClick.Controllers
                 pmm.title = dtable.Rows[i]["title"].ToString();
                 pmm.releaseDate = (DateTime)dtable.Rows[i]["releaseDate"];
                 pmm.picturePath = dtable.Rows[i]["picturePath"].ToString();
-                pmm.commentsCount = Convert.ToInt32(dtable.Rows[i]["Count(*)"]);
+                pmm.commentsCount = Convert.ToInt32(dtable.Rows[i]["Count"]);
                 commentCountTrailers.Add(pmm);
             }
 

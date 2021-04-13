@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace FlickClick.Models
 {
@@ -17,5 +21,7 @@ namespace FlickClick.Models
         public int ageRating { get; set; }
         public string comingSoon { get; set; }
         public string picturePath { get; set; }
+        public IFormFile pictureImage { get; set; }
+        public string trailerPath { get; set; }
     }
 }

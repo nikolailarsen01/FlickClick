@@ -1,5 +1,6 @@
 ﻿using FlickClick.BL;
 using FlickClick.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -14,7 +15,11 @@ namespace FlickClick.Controllers
     public class UserController : Controller
     {
         DBConnector db = new DBConnector();
-        DBUser dbUser = new DBUser();
+        DBUser dbUser;
+        public UserController(IWebHostEnvironment env)
+        {
+            dbUser = new DBUser(env);
+        }
         public ActionResult Index() 
         {
             UserModel um = new UserModel();
@@ -89,6 +94,7 @@ namespace FlickClick.Controllers
         [HttpPost]
         public ActionResult ValidateLogin()
         {
+            HttpContext.Session.SetString("loginError", "null");
             UserModel user = new UserModel();
             string email = HttpContext.Request.Form["email"];
             string password = HttpContext.Request.Form["password"];
@@ -108,6 +114,7 @@ namespace FlickClick.Controllers
                 }
                 else
                 {
+                    HttpContext.Session.SetString("loginError", "Could not login");
                     return RedirectToAction("Index", currentController);
                 }
             }
@@ -120,7 +127,7 @@ namespace FlickClick.Controllers
                     var result = dbUser.CheckAdminLogin(db, email, hashedPassword);
                     if (result.Item2 == true)
                     {
-                        
+
                         HttpContext.Session.SetString("email", result.Item1[0]);
                         HttpContext.Session.SetInt32("adminID", Int32.Parse(result.Item1[1]));
                         HttpContext.Session.SetInt32("isAdmin", 1);
@@ -128,10 +135,15 @@ namespace FlickClick.Controllers
                     }
                     else
                     {
+                        HttpContext.Session.SetString("loginError", "Could not login");
                         return RedirectToAction("Index", currentController);
                     }
                 }
-                else return RedirectToAction("Index", currentController);
+                else
+                {
+                    HttpContext.Session.SetString("loginError", "Could not login");
+                    return RedirectToAction("Index", currentController);
+                }
             }
         }
 
@@ -142,7 +154,7 @@ namespace FlickClick.Controllers
         }
 
         [HttpPost]
-        public ActionResult ValidateRegister()
+        public ActionResult ValidateRegister(UserCreateModel userCreate)
         {
             UserModel user = new UserModel();
             user.firstName = HttpContext.Request.Form["firstName"];
@@ -153,8 +165,9 @@ namespace FlickClick.Controllers
             user.houseNumber = HttpContext.Request.Form["houseNumber"];
             user.password = HttpContext.Request.Form["password"];
             user.phoneNumber = Int32.Parse(HttpContext.Request.Form["phoneNumber"]);
+            user.profilePic = userCreate.profilePic;
 
-            dbUser.CheckUserRegister(db, user);
+            dbUser.CheckUserRegisterAsync(db, user);
             return View();
         }
     }

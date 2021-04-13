@@ -42,6 +42,11 @@
                         <a class="mg" asp-controller="User" asp-action="Index" >Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>
                         <a class="mg" href="User/Logout">Log ud</a>
                     }
+                    else if (@HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
+                    {
+                        <a class="mg" asp-controller="Cms" asp-action="Index">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("email")</a>
+                        <a class="mg" href="User/Logout">Log ud</a>
+                    }
                     else
                     {
                         <form method="post" action="/User/ValidateLogin">
@@ -77,5 +82,11 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="@ViewData["js"]" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+    @if (@HttpContextAccessor.HttpContext.Session.GetString("loginError") != null && @HttpContextAccessor.HttpContext.Session.GetString("loginError") != "null")
+    {
+        <script type="text/javascript">
+            alert("@HttpContextAccessor.HttpContext.Session.GetString("loginError")");
+        </script>
+    }
 </body>
 </html>
