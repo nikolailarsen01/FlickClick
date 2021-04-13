@@ -10,8 +10,8 @@
             Genre
         </h1>
         <div class="sideLinks">
-            <a asp-controller="Cms" asp-action="Index">Tilbage til admin forside</a>
-            <a asp-action="Create">Tilføj genre</a>
+            <a asp-controller="Cms" asp-action="Index">Back to admin panel</a>
+            <a asp-action="Create">Add genre</a>
         </div>
         @foreach (var item in Model)
         {
@@ -31,10 +31,10 @@
             </dl>
             <div class="listForm">
                 <form asp-action="Edit" asp-route-id="@item.genreID" method="get">
-                    <input type="submit" name="submit" value="Rediger">
+                    <input type="submit" name="submit" value="Edit">
                 </form>
                 <form asp-action="Delete" asp-route-id="@item.genreID" method="get">
-                    <input type="submit" name="submit" value="Slet">
+                    <input type="submit" name="submit" value="Delete">
                 </form>
 
             </div>

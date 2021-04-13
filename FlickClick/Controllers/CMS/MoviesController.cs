@@ -1,4 +1,5 @@
 ﻿using FlickClick.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -13,9 +14,14 @@ namespace FlickClick.Controllers.CMS
 {
     public class MoviesController : Controller
     {
+        DBMovies dbMovie;
         DBConnector db = new DBConnector();
-        DBMovies dbMovie = new DBMovies();
         DBDirectors dbDirectors = new DBDirectors();
+
+        public MoviesController(IWebHostEnvironment env)
+        {
+            dbMovie = new DBMovies(env);
+        }
 
         // GET: CmsController
         public ActionResult Index()
@@ -46,7 +52,7 @@ namespace FlickClick.Controllers.CMS
         public ActionResult Create(MovieDirectorModel mdModel, int id)
         {
             db.makeConnection();
-            dbMovie.add(db, mdModel.MovieModel);
+            dbMovie.addAsync(db, mdModel.MovieModel);
             return RedirectToAction("Index");
         }
 
@@ -68,7 +74,7 @@ namespace FlickClick.Controllers.CMS
         public ActionResult Edit(MovieDirectorModel mdModel, int id)
         {
             mdModel.MovieModel.movieID = id;
-            dbMovie.update(db, mdModel.MovieModel);
+            dbMovie.updateAsync(db, mdModel.MovieModel);
             return RedirectToAction("Index");
         }
 
