@@ -1,6 +1,61 @@
 ﻿@model FlickClick.Models.UserModel;
 @{
+    ViewData["Stylesheet"] = "/css/user.css";
+    ViewData["js"] = "/js/user.js";
+
 }
 
+<img class="user-img" src="@Model.profilePicPath" alt="Image not found" onerror="this.onerror=null;this.src='assets/images/placeholder-image.png';" />
 
-<label>UserID: </label> @ViewBag.userID
+<table class="table">
+    <tr>
+        <th>
+            Firstname
+        </th>
+        <th>
+            Lastname
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            Phonenumber
+        </th>
+        <th>
+            User since
+        </th>
+        <th></th>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(Model => Model.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(Model => Model.lastName)
+        </td>
+        <td>
+            @Html.DisplayFor(Model => Model.email)
+        </td>
+        <td>
+            @Model.streetName @Model.houseNumber, @Model.postalCode
+        </td>
+        <td>
+            @Model.phoneNumber
+        </td>
+        <td>
+            @Model.userSince.ToString("dd-MM-yyyy")
+        </td>
+        <td>
+            <a asp-controller="User" asp-action="Edit">Edit</a>
+        </td>
+    </tr>
+</table>
+
+
+<h3>CommentsJ</h3>
+<table id="Comments" class="table">
+
+</table>

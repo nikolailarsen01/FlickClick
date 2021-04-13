@@ -39,7 +39,7 @@
                 <div class="layout-header-section-whole right">
                     @if (@HttpContextAccessor.HttpContext.Session.GetInt32("userID") > 0)
                     {
-                        <a class="mg" href="User/UserPage">Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>
+                        <a class="mg" asp-controller="User" asp-action="Index" >Velkommen @HttpContextAccessor.HttpContext.Session.GetString("firstName")</a>
                         <a class="mg" href="User/Logout">Log ud</a>
                     }
                     else if (@HttpContextAccessor.HttpContext.Session.GetInt32("isAdmin") == 1)
