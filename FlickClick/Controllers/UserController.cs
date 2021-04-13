@@ -1,5 +1,6 @@
 ﻿using FlickClick.BL;
 using FlickClick.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
@@ -14,7 +15,11 @@ namespace FlickClick.Controllers
     public class UserController : Controller
     {
         DBConnector db = new DBConnector();
-        DBUser dbUser = new DBUser();
+        DBUser dbUser;
+        public UserController(IWebHostEnvironment env)
+        {
+            dbUser = new DBUser(env);
+        }
         public ActionResult Index() 
         {
 
@@ -87,7 +92,7 @@ namespace FlickClick.Controllers
         }
 
         [HttpPost]
-        public ActionResult ValidateRegister()
+        public ActionResult ValidateRegister(UserCreateModel userCreate)
         {
             UserModel user = new UserModel();
             user.firstName = HttpContext.Request.Form["firstName"];
@@ -98,8 +103,9 @@ namespace FlickClick.Controllers
             user.houseNumber = HttpContext.Request.Form["houseNumber"];
             user.password = HttpContext.Request.Form["password"];
             user.phoneNumber = Int32.Parse(HttpContext.Request.Form["phoneNumber"]);
+            user.profilePic = userCreate.profilePic;
 
-            dbUser.CheckUserRegister(db, user);
+            var result = dbUser.CheckUserRegisterAsync(db, user);
             return View();
         }
 

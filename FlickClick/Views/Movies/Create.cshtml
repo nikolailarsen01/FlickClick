@@ -1,8 +1,9 @@
 ﻿@model FlickClick.Models.MovieDirectorModel
 
 @{
-    ViewData["Title"] = "CreateMovie";
+    ViewData["Title"] = "Admin Panel: Movie Add";
     ViewData["Stylesheet"] = "/css/cms.css";
+    Layout = "~/Views/Shared/_CmsLayout.cshtml";
 }
 @{
     List<string> ageLimit = new List<string>();
@@ -14,20 +15,20 @@
 
 }
 
-<h1>Tilføj</h1>
+<h1>Add</h1>
 
-<h4>Film</h4>
+<h4>Movie</h4>
 <hr />
 <div class="contentContainter">
     <div class="row">
         <div class="col-md-4">
             @Html.AntiForgeryToken()
-            <form asp-action="Create">
+            <form asp-action="Create" enctype="multipart/form-data" >
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="MovieModel.title" class="control-label"></label>
-                    <input asp-for="MovieModel.title" type="text" class="form-control" required />
+                    <input asp-for="MovieModel.title" type="text" class="form-control" maxlength="64" required />
                     <span asp-validation-for="MovieModel.title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -37,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="MovieModel.description" class="control-label"></label>
-                    <textarea placeholder="Beskrivelse" asp-for="MovieModel.description" type="text" class="form-control" required>
+                    <textarea placeholder="Beskrivelse" asp-for="MovieModel.description" type="text" class="form-control" maxlength="512" required>
                     </textarea>
                     <span asp-validation-for="MovieModel.description" class="text-danger"></span>
                 </div>
@@ -75,18 +76,18 @@
                     <span asp-validation-for="MovieModel.comingSoon" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="MovieModel.picturePath" class="control-label"></label>
-                    <input asp-for="MovieModel.picturePath" class="form-control" required />
-                    <span asp-validation-for="MovieModel.picturePath" class="text-danger"></span>
+                    <label asp-for="MovieModel.pictureImage" class="control-label"></label>
+                    <input asp-for="MovieModel.pictureImage" type="file" class="form-control" accept="image/*" required />
+                    <span asp-validation-for="MovieModel.pictureImage" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="submit" value="Tilføj" class="btn btn-primary" />
+                    <input type="submit" name="submit" value="Add" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
     <div>
-        <a asp-action="Index">Tilbage til listen</a>
+        <a asp-action="Index">Back to list</a>
     </div>
 </div>
 

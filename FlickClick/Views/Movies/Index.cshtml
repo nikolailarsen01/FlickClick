@@ -1,17 +1,18 @@
 ﻿@model IEnumerable<FlickClick.Models.MovieModel>
 @{
-    ViewData["Title"] = "Admin Panel: Film";
+    ViewData["Title"] = "Admin Panel: Movies";
     ViewData["Stylesheet"] = "/css/cms.css";
+    Layout = "~/Views/Shared/_CmsLayout.cshtml";
 }
 
 <div>
     <div class="contentContainter">
         <h1>
-            Film
+            Movies
         </h1>
         <div class="sideLinks">
-            <a asp-controller="Cms" asp-action="Index">Tilbage til admin forside</a>
-            <a asp-action="Create">Tilføj film</a>
+            <a asp-controller="Cms" asp-action="Index">Back to admin panel</a>
+            <a asp-action="Create">Add movie</a>
         </div>
         @foreach (var item in Model)
         {
@@ -81,10 +82,10 @@
             </dl>
             <div class="listForm">
                 <form asp-action="Edit" asp-route-id="@item.movieID" method="get">
-                    <input type="submit" name="submit" value="Rediger">
+                    <input type="submit" name="submit" value="Edit">
                 </form>
                 <form asp-action="Delete" asp-route-id="@item.movieID" method="get">
-                    <input type="submit" name="submit" value="Slet">
+                    <input type="submit" name="submit" value="Delete">
                 </form>
             </div>
         }

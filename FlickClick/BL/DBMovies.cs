@@ -4,11 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Drawing;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace FlickClick
 {
     public class DBMovies
     {
+        private readonly IWebHostEnvironment rootPath;
+        public DBMovies() { }
+        public DBMovies (IWebHostEnvironment env)
+        {
+            rootPath = env;
+        }
         public MovieModel getMovie(DBConnector db, int id)
         {
             string query = $"SELECT * FROM movies WHERE movieID='{id}'";
@@ -48,8 +57,10 @@ namespace FlickClick
             }
             return movies;
         }
-        public void update(DBConnector db, MovieModel movie)
+        public async System.Threading.Tasks.Task updateAsync(DBConnector db, MovieModel movie)
         {
+            string picturePath = await saveMovieBannerAsync(movie);
+
             string query = "UPDATE `movies` SET title=@title, releaseDate=@releaseDate, description=@description, directorID=@directorID, duration=@duration, postDate=@postDate, comingSoon=@comingSoon, picturePath=@picturePath WHERE movieID=@movieID";
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.CommandType = CommandType.Text;
@@ -61,12 +72,14 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
             cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
-            cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);
+            cmd.Parameters.AddWithValue("@picturePath", picturePath);
             cmd.Parameters.AddWithValue("@movieID", movie.movieID);
             db.sqlUpdateOrInsertQuery(cmd);
         }
-        public void add(DBConnector db, MovieModel movie)
+        public async System.Threading.Tasks.Task addAsync(DBConnector db, MovieModel movie)
         {
+            string picturePath = await saveMovieBannerAsync(movie);
+
             movie.postDate = DateTime.Now;
             string query = "INSERT INTO `movies` (`title`, `releaseDate`, `description`, `directorID`, `duration`, `postDate`, `ageRating`, `comingSoon`, `picturePath`) " +
                 "VALUES (@title, @releaseDate, @description, @directorID, @duration, @postDate, @ageRating, @comingSoon, @picturePath)";
@@ -80,16 +93,46 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd HH:mm:ss"));
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
             cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
-            cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);
+            cmd.Parameters.AddWithValue("@picturePath", picturePath);
             db.sqlUpdateOrInsertQuery(cmd);
         }
-        public  void delete(DBConnector db, int id)
+        public void delete(DBConnector db, int id)
         {
             string query = "DELETE FROM `movies` WHERE movieID=@movieID";
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("@movieID", id);
             db.sqlDeleteQuery(cmd);
+        }
+
+        private async System.Threading.Tasks.Task<string> saveMovieBannerAsync(MovieModel movie)
+        {
+            //Save picture
+            string rawRootPath = rootPath.WebRootPath;
+            string wwwRootPath = "";
+            foreach (char c in rawRootPath)
+            {
+                if (c.ToString() == "\u005C")
+                {
+                    wwwRootPath += "/";
+                }
+                else wwwRootPath += c.ToString();
+            }
+            string fileName = "";
+            foreach (char c in movie.title)
+            {
+                if (c == ' ') fileName += "_";
+                else if (c.ToString() == ":") fileName += "-";
+                else fileName += c.ToString();
+            }
+            string extension = Path.GetExtension(movie.pictureImage.FileName);
+            string wwwPicturePath = "/assets/movie-banners/" + fileName + extension;
+            string path = Path.Combine(wwwRootPath + wwwPicturePath);
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await movie.pictureImage.CopyToAsync(fileStream);
+            }
+            return wwwPicturePath;
         }
     }
 }

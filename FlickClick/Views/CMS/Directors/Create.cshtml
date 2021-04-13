@@ -1,14 +1,14 @@
 ﻿@model FlickClick.Models.DirectorModel
 
 @{
-    ViewData["Title"] = "Admin Panel: Instruktører";
+    ViewData["Title"] = "Admin Panel: Instructors Add";
     ViewData["Stylesheet"] = "/css/cms.css";
-    Layout = "_CmsLayout.cshtml";
+    Layout = "~/Views/Shared/_CmsLayout.cshtml";
 }
 
-<h1>Tilføj</h1>
+<h1>Add</h1>
 
-<h4>Instruktør</h4>
+<h4>Instructor</h4>
 <hr />
 <div class="contentContainter">
     <div class="row">
@@ -18,12 +18,12 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="firstName" class="control-label"></label>
-                    <input asp-for="firstName" type="text" class="form-control" required />
+                    <input asp-for="firstName" type="text" class="form-control" maxlength="32" required />
                     <span asp-validation-for="firstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="lastName" class="control-label"></label>
-                    <input asp-for="lastName" type="text" class="form-control" required />
+                    <input asp-for="lastName" type="text" class="form-control" maxlength="32" required />
                     <span asp-validation-for="lastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -32,13 +32,13 @@
                     <span asp-validation-for="dateOfBirth" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Tilføj" class="btn btn-primary" />
+                    <input type="submit" value="Add" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
     <div>
-        <a asp-action="Index">Tilbage til listen</a>
+        <a asp-action="Index">Back to list</a>
     </div>
 </div>
 
