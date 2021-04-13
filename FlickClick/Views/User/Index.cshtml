@@ -6,7 +6,11 @@
 }
 
 <img class="user-img" src="@Model.profilePicPath" alt="Image not found" onerror="this.onerror=null;this.src='assets/images/placeholder-image.png';" />
-
+<form action="/action_page.php">
+    <label for="img">Select image:</label>
+    <input type="file" id="img" name="img" accept="image/*">
+    <input type="submit">
+</form>
 <table class="table">
     <tr>
         <th>

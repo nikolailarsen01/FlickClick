@@ -28,7 +28,7 @@ namespace FlickClick
             services.AddControllersWithViews();
             services.AddMemoryCache();
             services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(1); 
+                options.IdleTimeout = TimeSpan.FromMinutes(30); 
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
