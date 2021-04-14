@@ -6,11 +6,14 @@
 }
 
 <img class="user-img" src="@Model.profilePicPath" alt="Image not found" onerror="this.onerror=null;this.src='assets/images/placeholder-image.png';" />
-<form action="/action_page.php">
-    <label for="img">Select image:</label>
-    <input type="file" id="img" name="img" accept="image/*">
-    <input type="submit">
+<form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Index">
+    <span>Vælg billede:</span>
+    <input type="file" name="postedFiles" accept="image/*"/>
+    <input type="submit" value="Upload" style="text-decoration: underline;"/>
+    <br />
+    <span style="color:green">@Html.Raw(ViewBag.Message)</span>
 </form>
+
 <table class="table">
     <tr>
         <th>
@@ -61,5 +64,4 @@
 
 <h3>Comments</h3>
 <table id="Comments" class="table">
-
 </table>

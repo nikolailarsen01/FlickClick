@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace FlickClick.Controllers
 {
@@ -16,9 +17,13 @@ namespace FlickClick.Controllers
     {
         DBConnector db = new DBConnector();
         DBUser dbUser;
-        public UserController(IWebHostEnvironment env)
+
+        private IHostingEnvironment Environment;
+
+        public UserController(IWebHostEnvironment env, IHostingEnvironment _environment)
         {
             dbUser = new DBUser(env);
+            Environment = _environment;
         }
         public ActionResult Index() 
         {
@@ -87,6 +92,7 @@ namespace FlickClick.Controllers
         [HttpPost]
         public ActionResult EditUpdate()
         {
+
 
             return View();
         }
@@ -193,9 +199,56 @@ namespace FlickClick.Controllers
             }
         }
 
-        public ActionResult UserPage()
+        [HttpPost]
+        public IActionResult Index(List<IFormFile> postedFiles)
         {
-            return View();
+            UserModel um = new UserModel();
+            int userID = (int)HttpContext.Session.GetInt32("userID");
+
+            string query = "SELECT users.userID, firstnames.firstName, lastnames.lastName, emailusers.email, citycodes.postalCode, streetnames.streetName, addressjunction.houseNumber, phoneNumber, profilePicPath, userSince FROM `users` INNER JOIN firstnames ON users.firstNameID = firstnames.firstNameID INNER JOIN lastnames ON users.lastNameID = lastnames.lastNameID INNER JOIN addressjunction ON users.addressID = addressjunction.ID INNER JOIN citycodes ON addressjunction.cityID = citycodes.cityID INNER JOIN streetnames ON addressjunction.streetID = streetnames.streetID INNER JOIN emailusers ON users.userID = emailusers.userID WHERE users.userID='" + userID + "'";
+            MySqlCommand cmd = new MySqlCommand(query);
+            DataTable dtb = db.SqlSelectQuery(cmd);
+            for (int i = 0; i < dtb.Rows.Count; i++)
+            {
+
+                um.userID = (int)dtb.Rows[i]["userID"];
+                um.firstName = dtb.Rows[i]["firstName"].ToString();
+                um.lastName = dtb.Rows[i]["lastName"].ToString();
+                um.email = dtb.Rows[i]["email"].ToString();
+                um.postalCode = (int)dtb.Rows[i]["postalCode"];
+                um.streetName = dtb.Rows[i]["streetName"].ToString();
+                um.houseNumber = dtb.Rows[i]["houseNumber"].ToString();
+                um.phoneNumber = Convert.ToInt32(dtb.Rows[i]["phoneNumber"]);
+                um.profilePicPath = dtb.Rows[i]["profilePicPath"].ToString();
+                um.userSince = (DateTime)dtb.Rows[i]["userSince"];
+            }
+
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = Path.Combine(this.Environment.WebRootPath, "assets/profile-pictures");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            List<string> uploadedFiles = new List<string>();
+            foreach (IFormFile postedFile in postedFiles)
+            {
+                string fileName = Path.GetFileName(postedFile.FileName);
+                using (FileStream stream = new FileStream(Path.Combine(path, "pictureforuser" + userID + ".png"), FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                    uploadedFiles.Add(fileName);
+                    ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
+                }
+
+                query = "UPDATE users SET profilePicPath='assets/profile-pictures/" + "pictureforuser" + userID + ".png" +"' WHERE userID='" +userID+"' ";
+                cmd = new MySqlCommand(query);
+                db.sqlUpdateOrInsertQuery(cmd);
+            }
+
+            return View(um);
         }
     }
 }
