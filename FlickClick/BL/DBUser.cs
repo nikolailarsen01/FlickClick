@@ -115,7 +115,7 @@ namespace FlickClick.BL
             }
             else return Tuple.Create(output, false);
         }
-        public async Task<Tuple<UserModel, bool>> CheckUserRegisterAsync(DBConnector db, UserModel user)
+        public Tuple<UserModel, bool> CheckUserRegister(DBConnector db, UserModel user)
         {
             int postalCodeID = 0;
             int streetNameID = 0;
