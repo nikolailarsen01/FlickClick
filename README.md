@@ -1,3 +1,3 @@
 # FlickClick
 
-### Version 0.9.0
+### Version 1.0.0
