@@ -182,7 +182,7 @@ namespace FlickClick.Controllers
             user.phoneNumber = Int32.Parse(HttpContext.Request.Form["phoneNumber"]);
             user.profilePic = userCreate.profilePic;
 
-            var result = dbUser.CheckUserRegisterAsync(db, user);
+            var result = dbUser.CheckUserRegister(db, user);
 
             if(result.Result.Item2 == false )
             {

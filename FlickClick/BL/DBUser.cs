@@ -115,7 +115,7 @@ namespace FlickClick.BL
             }
             else return Tuple.Create(output, false);
         }
-        public async Task<Tuple<UserModel, bool>> CheckUserRegisterAsync(DBConnector db, UserModel user)
+        public Tuple<UserModel, bool> CheckUserRegister(DBConnector db, UserModel user)
         {
             int postalCodeID = 0;
             int streetNameID = 0;
@@ -228,7 +228,7 @@ namespace FlickClick.BL
             }
             else
             {
-                string profilePicPath = await saveProfilePicAsync(user);
+                string profilePicPath = SaveAndGetPicPath(user);
                 query = "INSERT INTO `users`(`firstNameID`, `lastNameID`, `addressID`, `password`, `passwordSalt`, `phoneNumber`, `profilePicPath`, `userSince`)" +
                 " VALUES (@firstNameID, @lastNameID, @addressID, @password, @passwordSalt, @phoneNumber, @profilePicPath, @userSince)";
                 cmd = new MySqlCommand(query);
@@ -252,9 +252,9 @@ namespace FlickClick.BL
                 return Tuple.Create(user, true);
             }
         }
-        private async System.Threading.Tasks.Task<string> saveProfilePicAsync(UserModel user)
+        private string SaveAndGetPicPath(UserModel user)
         {
-            //Save picture
+            //Fix strings
             string rawRootPath = rootPath.WebRootPath;
             string wwwRootPath = "";
             foreach (char c in rawRootPath)
@@ -274,13 +274,18 @@ namespace FlickClick.BL
             string extension = Path.GetExtension(user.profilePic.FileName);
             string profilePicPath = "/assets/profile-pictures/" + fileName + extension;
             string path = Path.Combine(wwwRootPath + profilePicPath);
+            saveProfilePicAsync(user, path);
+            return profilePicPath;
+        }
+        private async void saveProfilePicAsync(UserModel user, string path)
+        {
+            //Save picture
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
                 await user.profilePic.CopyToAsync(fileStream);
             }
-            return profilePicPath;
         }
-        public List<UserModel> getAll(DBConnector db)
+        public List<UserModel> GetAll(DBConnector db)
         {
             List<UserModel> userList = new List<UserModel>();
             string query = "SELECT users.userID, firstnames.firstName, lastnames.lastName, emailusers.email, citycodes.postalCode, streetnames.streetName, addressjunction.houseNumber, phoneNumber, profilePicPath, userSince FROM `users` INNER JOIN firstnames ON users.firstNameID = firstnames.firstNameID INNER JOIN lastnames ON users.lastNameID = lastnames.lastNameID INNER JOIN addressjunction ON users.addressID = addressjunction.ID INNER JOIN citycodes ON addressjunction.cityID = citycodes.cityID INNER JOIN streetnames ON addressjunction.streetID = streetnames.streetID INNER JOIN emailusers ON users.userID = emailusers.userID";
@@ -301,6 +306,38 @@ namespace FlickClick.BL
                 userList.Add(um);
             }
             return userList;
+        }
+        public UserModel GetOne(DBConnector db, int id)
+        {
+            UserModel um = new UserModel();
+            string query = "SELECT users.userID, firstnames.firstName, lastnames.lastName, emailusers.email, citycodes.postalCode, streetnames.streetName, addressjunction.houseNumber, phoneNumber, profilePicPath, userSince FROM `users` INNER JOIN firstnames ON users.firstNameID = firstnames.firstNameID INNER JOIN lastnames ON users.lastNameID = lastnames.lastNameID INNER JOIN addressjunction ON users.addressID = addressjunction.ID INNER JOIN citycodes ON addressjunction.cityID = citycodes.cityID INNER JOIN streetnames ON addressjunction.streetID = streetnames.streetID INNER JOIN emailusers ON users.userID = emailusers.userID WHERE users.userID=@userID";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.Parameters.AddWithValue("@userID", id);
+            DataTable dTable = db.SqlSelectQuery(cmd);
+            um.userID = (int)dTable.Rows[0]["userID"];
+            um.firstName = dTable.Rows[0]["firstName"].ToString();
+            um.lastName = dTable.Rows[0]["lastName"].ToString();
+            um.email = dTable.Rows[0]["email"].ToString();
+            um.postalCode = (int)dTable.Rows[0]["postalCode"];
+            um.streetName = dTable.Rows[0]["streetName"].ToString();
+            um.houseNumber = dTable.Rows[0]["houseNumber"].ToString();
+            um.phoneNumber = Convert.ToInt32(dTable.Rows[0]["phoneNumber"]);
+            um.profilePicPath = dTable.Rows[0]["profilePicPath"].ToString();
+            um.userSince = (DateTime)dTable.Rows[0]["userSince"];
+            return um;
+        }
+        public void Delete(DBConnector db, int id)
+        {
+            string query = "DELETE FROM `emailusers` WHERE userID=@userID";
+            MySqlCommand cmd = new MySqlCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@userID", id);
+            db.sqlDeleteQuery(cmd);
+            query = "DELETE FROM `users` WHERE userID=@userID";
+            cmd = new MySqlCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@userID", id);
+            db.sqlDeleteQuery(cmd);
         }
     }
 }

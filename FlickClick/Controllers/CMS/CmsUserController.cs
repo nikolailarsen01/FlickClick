@@ -16,7 +16,7 @@ namespace FlickClick.Controllers.CMS
         // GET: CmsUserController
         public ActionResult Index()
         {
-            List<UserModel> userList = dbUser.getAll(db); 
+            List<UserModel> userList = dbUser.GetAll(db); 
             return View(userList);
         }
 
@@ -71,7 +71,8 @@ namespace FlickClick.Controllers.CMS
         // GET: CmsUserController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            UserModel user = dbUser.GetOne(db, id);
+            return View(user);
         }
 
         // POST: CmsUserController/Delete/5
@@ -79,14 +80,8 @@ namespace FlickClick.Controllers.CMS
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            dbUser.Delete(db, id);
+            return RedirectToAction("Index");
         }
     }
 }
