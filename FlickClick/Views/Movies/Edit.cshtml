@@ -108,8 +108,17 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="MovieModel.pictureImage" class="control-label"></label>
-                    <input asp-for="MovieModel.pictureImage" type="file" class="form-control" accept="image/*" required />
+                    <input asp-for="MovieModel.pictureImage" type="file" class="form-control" accept="image/*" />
                     <span asp-validation-for="MovieModel.pictureImage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="MovieModel.picturePath" type="text" class="form-control" hidden />
+                    <span asp-validation-for="MovieModel.picturePath" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieModel.trailerPath" class="control-label"></label>
+                    <input asp-for="MovieModel.trailerPath" type="text" class="form-control" maxlength="250" required />
+                    <span asp-validation-for="MovieModel.trailerPath" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" name="submit" value="Gem" class="btn btn-primary" />

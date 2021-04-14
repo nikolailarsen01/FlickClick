@@ -52,7 +52,7 @@ namespace FlickClick.Controllers.CMS
         public ActionResult Create(MovieDirectorModel mdModel, int id)
         {
             db.makeConnection();
-            dbMovie.addAsync(db, mdModel.MovieModel);
+            dbMovie.Insert(db, mdModel.MovieModel);
             return RedirectToAction("Index");
         }
 
@@ -74,7 +74,7 @@ namespace FlickClick.Controllers.CMS
         public ActionResult Edit(MovieDirectorModel mdModel, int id)
         {
             mdModel.MovieModel.movieID = id;
-            dbMovie.updateAsync(db, mdModel.MovieModel);
+            dbMovie.Update(db, mdModel.MovieModel);
             return RedirectToAction("Index");
         }
 

@@ -1,38 +1,38 @@
-﻿using FlickClick.Models;
-using FlickClick.BL;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlickClick.BL;
+using FlickClick.Models;
 
 namespace FlickClick.Controllers.CMS
 {
-    public class CmsUserController : Controller
+    public class CommentsController : Controller
     {
         DBConnector db = new DBConnector();
-        DBUser dbUser = new DBUser();
-        // GET: CmsUserController
+        DBComments dbComments = new DBComments();
+        // GET: CommentsController
         public ActionResult Index()
         {
-            List<UserModel> userList = dbUser.GetAll(db); 
-            return View(userList);
+            List<CommentModel> comments = dbComments.GetAll(db);
+            return View(comments);
         }
 
-        // GET: CmsUserController/Details/5
+        // GET: CommentsController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: CmsUserController/Create
+        // GET: CommentsController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: CmsUserController/Create
+        // POST: CommentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -47,13 +47,13 @@ namespace FlickClick.Controllers.CMS
             }
         }
 
-        // GET: CmsUserController/Edit/5
+        // GET: CommentsController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: CmsUserController/Edit/5
+        // POST: CommentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -68,19 +68,19 @@ namespace FlickClick.Controllers.CMS
             }
         }
 
-        // GET: CmsUserController/Delete/5
+        // GET: CommentsController/Delete/5
         public ActionResult Delete(int id)
         {
-            UserModel user = dbUser.GetOne(db, id);
-            return View(user);
+            CommentModel comment = dbComments.GetOne(db, id);
+            return View(comment);
         }
 
-        // POST: CmsUserController/Delete/5
+        // POST: CommentsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            dbUser.Delete(db, id);
+            dbComments.Delete(db, id);
             return RedirectToAction("Index");
         }
     }

@@ -13,6 +13,7 @@ namespace FlickClick
     public class DBMovies
     {
         private readonly IWebHostEnvironment rootPath;
+        private readonly string bannerPath;
         public DBMovies() { }
         public DBMovies (IWebHostEnvironment env)
         {
@@ -33,6 +34,7 @@ namespace FlickClick
             mm.ageRating = (int)dtable.Rows[0]["ageRating"];
             mm.comingSoon = dtable.Rows[0]["comingSoon"].ToString();
             mm.picturePath = dtable.Rows[0]["picturePath"].ToString();
+            mm.trailerPath = dtable.Rows[0]["trailerPath"].ToString();
             return mm;
         }
         public List<MovieModel> getMovies(DBConnector db)
@@ -53,15 +55,14 @@ namespace FlickClick
                 mm.ageRating = (int)dtable.Rows[i]["ageRating"];
                 mm.comingSoon = dtable.Rows[i]["comingSoon"].ToString();
                 mm.picturePath = dtable.Rows[i]["picturePath"].ToString();
+                mm.trailerPath = dtable.Rows[i]["trailerPath"].ToString();
                 movies.Add(mm);
             }
             return movies;
         }
-        public async System.Threading.Tasks.Task updateAsync(DBConnector db, MovieModel movie)
+        public void Update(DBConnector db, MovieModel movie)
         {
-            string picturePath = await saveMovieBannerAsync(movie);
-
-            string query = "UPDATE `movies` SET title=@title, releaseDate=@releaseDate, description=@description, directorID=@directorID, duration=@duration, postDate=@postDate, comingSoon=@comingSoon, picturePath=@picturePath WHERE movieID=@movieID";
+            string query = "UPDATE `movies` SET title=@title, releaseDate=@releaseDate, description=@description, directorID=@directorID, duration=@duration, postDate=@postDate, comingSoon=@comingSoon, picturePath=@picturePath, trailerPath=@trailerPath WHERE movieID=@movieID";
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("@title", movie.title);
@@ -72,17 +73,23 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
             cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
-            cmd.Parameters.AddWithValue("@picturePath", picturePath);
+            if (movie.pictureImage != null)
+            {
+                string picturePath = SaveAndGetBannerPath(movie);
+                cmd.Parameters.AddWithValue("@picturePath", picturePath);
+            }
+            else cmd.Parameters.AddWithValue("@picturePath", movie.picturePath);
+            cmd.Parameters.AddWithValue("@trailerPath", movie.trailerPath);
             cmd.Parameters.AddWithValue("@movieID", movie.movieID);
             db.sqlUpdateOrInsertQuery(cmd);
         }
-        public async System.Threading.Tasks.Task addAsync(DBConnector db, MovieModel movie)
+        public void Insert(DBConnector db, MovieModel movie)
         {
-            string picturePath = await saveMovieBannerAsync(movie);
+            string picturePath = SaveAndGetBannerPath(movie);
 
             movie.postDate = DateTime.Now;
-            string query = "INSERT INTO `movies` (`title`, `releaseDate`, `description`, `directorID`, `duration`, `postDate`, `ageRating`, `comingSoon`, `picturePath`) " +
-                "VALUES (@title, @releaseDate, @description, @directorID, @duration, @postDate, @ageRating, @comingSoon, @picturePath)";
+            string query = "INSERT INTO `movies` (`title`, `releaseDate`, `description`, `directorID`, `duration`, `postDate`, `ageRating`, `comingSoon`, `picturePath`, `trailerPath`) " +
+                "VALUES (@title, @releaseDate, @description, @directorID, @duration, @postDate, @ageRating, @comingSoon, @picturePath, @trailerPath)";
             MySqlCommand cmd = new MySqlCommand(query);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("@title", movie.title);
@@ -94,6 +101,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
             cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
             cmd.Parameters.AddWithValue("@picturePath", picturePath);
+            cmd.Parameters.AddWithValue("@trailerPath", movie.trailerPath);
             db.sqlUpdateOrInsertQuery(cmd);
         }
         public void delete(DBConnector db, int id)
@@ -105,9 +113,9 @@ namespace FlickClick
             db.sqlDeleteQuery(cmd);
         }
 
-        private async System.Threading.Tasks.Task<string> saveMovieBannerAsync(MovieModel movie)
+        private string SaveAndGetBannerPath(MovieModel movie)
         {
-            //Save picture
+            //Fix strings
             string rawRootPath = rootPath.WebRootPath;
             string wwwRootPath = "";
             foreach (char c in rawRootPath)
@@ -128,11 +136,16 @@ namespace FlickClick
             string extension = Path.GetExtension(movie.pictureImage.FileName);
             string wwwPicturePath = "/assets/movie-banners/" + fileName + extension;
             string path = Path.Combine(wwwRootPath + wwwPicturePath);
-            using (var fileStream = new FileStream(path, FileMode.Create))
+            saveMovieBannerAsync(movie, path);
+            return wwwPicturePath;
+        }
+        private async void saveMovieBannerAsync(MovieModel movie, string path)
+        {
+            //Save banner
+            await using (var fileStream = new FileStream(path, FileMode.Create))
             {
                 await movie.pictureImage.CopyToAsync(fileStream);
             }
-            return wwwPicturePath;
         }
     }
 }
