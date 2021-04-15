@@ -92,7 +92,142 @@ namespace FlickClick.Controllers
         [HttpPost]
         public ActionResult EditUpdate()
         {
+            int userID = (int)HttpContext.Session.GetInt32("userID");
+            UserModel user = new UserModel();
+            user.firstName = HttpContext.Request.Form["firstName"];
+            user.lastName = HttpContext.Request.Form["lastName"];
+            user.email = HttpContext.Request.Form["email"];
+            user.postalCode = Int32.Parse(HttpContext.Request.Form["postalCode"]);
+            user.streetName = HttpContext.Request.Form["streetName"];
+            user.houseNumber = HttpContext.Request.Form["houseNumber"];
+            user.password = HttpContext.Request.Form["password"];
+            user.phoneNumber = Int32.Parse(HttpContext.Request.Form["phoneNumber"]);
 
+            int firstNameID = 0;
+            int lastNameID = 0;
+            int addressID = 0;
+            int emailID = 0;
+
+            string query = "SELECT * FROM users WHERE userID='"+ userID + "'";
+            MySqlCommand cmd = new MySqlCommand(query);
+            DataTable dtb = db.SqlSelectQuery(cmd);
+            for (int i = 0; i < dtb.Rows.Count; i++)
+            {
+                firstNameID = (int)dtb.Rows[i]["firstNameID"];
+                lastNameID = (int)dtb.Rows[i]["lastNameID"];
+                addressID = (int)dtb.Rows[i]["addressID"];
+            }
+
+
+            //firstName
+            int newFirstNameID = 0;
+            query = "SELECT * FROM firstnames WHERE firstName='"+ user.firstName +"'";
+            cmd = new MySqlCommand(query);
+            dtb = db.SqlSelectQuery(cmd);
+            if (dtb.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtb.Rows.Count; i++)
+                {
+                    newFirstNameID = (int)dtb.Rows[i]["firstNameID"];
+                }
+            }
+            else
+            {
+                query = "INSERT INTO firstnames (`firstName`) VALUES ('"+user.firstName+"')";
+                cmd = new MySqlCommand(query);
+                db.sqlUpdateOrInsertQuery(cmd);
+                newFirstNameID = Convert.ToInt32(cmd.LastInsertedId);
+            }
+
+            //lastName
+            int newLastNameID = 0;
+            query = "SELECT * FROM lastnames WHERE lastName='" + user.lastName + "'";
+            cmd = new MySqlCommand(query);
+            dtb = db.SqlSelectQuery(cmd);
+            if (dtb.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtb.Rows.Count; i++)
+                {
+                    newLastNameID = (int)dtb.Rows[i]["lastNameID"];
+                }
+            }
+            else
+            {
+                query = "INSERT INTO lastnames (`lastName`) VALUES ('" + user.lastName + "')";
+                cmd = new MySqlCommand(query);
+                db.sqlUpdateOrInsertQuery(cmd);
+                newLastNameID = Convert.ToInt32(cmd.LastInsertedId);
+            }
+
+            //cityID
+            int newCityID = 0;
+            query = "SELECT * FROM citycodes WHERE postalCode='" + user.postalCode + "'";
+            cmd = new MySqlCommand(query);
+            dtb = db.SqlSelectQuery(cmd);
+            if (dtb.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtb.Rows.Count; i++)
+                {
+                    newCityID = (int)dtb.Rows[i]["cityID"];
+                }
+            }
+            else
+            {
+                query = "INSERT INTO citycodes (`postalCode`) VALUES ('" + user.postalCode + "')";
+                cmd = new MySqlCommand(query);
+                db.sqlUpdateOrInsertQuery(cmd);
+                newCityID = Convert.ToInt32(cmd.LastInsertedId);
+            }
+
+            //streetID
+            int newStreetID = 0;
+            query = "SELECT * FROM streetnames WHERE streetName='" + user.streetName + "'";
+            cmd = new MySqlCommand(query);
+            dtb = db.SqlSelectQuery(cmd);
+            if (dtb.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtb.Rows.Count; i++)
+                {
+                    newStreetID = (int)dtb.Rows[i]["streetID"];
+                }
+            }
+            else
+            {
+                query = "INSERT INTO streetnames (`streetName`) VALUES ('" + user.streetName + "')";
+                cmd = new MySqlCommand(query);
+                db.sqlUpdateOrInsertQuery(cmd);
+                newStreetID = Convert.ToInt32(cmd.LastInsertedId);
+            }
+
+            //addressID
+            int newAddressID = 0;
+            query = "SELECT * FROM addressjunction WHERE cityID='" + newCityID + "' AND streetID='"+ newStreetID +"' AND houseNumber='"+ user.houseNumber +"'";
+            cmd = new MySqlCommand(query);
+            dtb = db.SqlSelectQuery(cmd);
+            if (dtb.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtb.Rows.Count; i++)
+                {
+                    newAddressID = (int)dtb.Rows[i]["ID"];
+                }
+            }
+            else
+            {
+                query = "INSERT INTO addressjunction (cityID, streetID, houseNumber) VALUES ('" + newCityID + "','" + newStreetID + "','" + user.houseNumber + "')";
+                cmd = new MySqlCommand(query);
+                db.sqlUpdateOrInsertQuery(cmd);
+                newAddressID = Convert.ToInt32(cmd.LastInsertedId);
+            }
+
+            //email
+            query = "UPDATE emailusers SET email='"+user.email+"' WHERE userID='"+userID+"'";
+            cmd = new MySqlCommand(query);
+            db.sqlUpdateOrInsertQuery(cmd);
+
+            //user
+            query = "UPDATE users SET firstNameID='"+newFirstNameID+ "',lastNameID='" + newLastNameID + "', addressID='" + newAddressID + "', phoneNumber='"+user.phoneNumber+"' WHERE userID='"+userID+"'";
+            cmd = new MySqlCommand(query);
+            db.sqlUpdateOrInsertQuery(cmd);
 
             return View();
         }
@@ -184,14 +319,14 @@ namespace FlickClick.Controllers
 
             var result = dbUser.CheckUserRegister(db, user);
 
-            if(result.Result.Item2 == false )
+            if(result.Item2 == false )
             {
                 HttpContext.Session.SetString("loginError", "The used email is already in use");
                 return View();
             }
             else
             {
-                user = result.Result.Item1;
+                user = result.Item1;
                 HttpContext.Session.SetInt32("userID", user.userID);
                 HttpContext.Session.SetString("firstName", user.firstName);
                 HttpContext.Session.SetInt32("isAdmin", 0);

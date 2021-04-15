@@ -11,7 +11,7 @@
         <form asp-action="EditUpdate" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="firstName" class="control-label"></label>
+                <label asp-for="firstName" class="control-label">Firstname</label>
                 <input asp-for="firstName" value="@Model.firstName" class="form-control" />
                 <span asp-validation-for="firstName" class="text-danger"></span>
             </div>
