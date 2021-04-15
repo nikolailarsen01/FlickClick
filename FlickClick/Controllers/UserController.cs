@@ -184,14 +184,14 @@ namespace FlickClick.Controllers
 
             var result = dbUser.CheckUserRegister(db, user);
 
-            if(result.Result.Item2 == false )
+            if(result.Item2 == false )
             {
                 HttpContext.Session.SetString("loginError", "The used email is already in use");
                 return View();
             }
             else
             {
-                user = result.Result.Item1;
+                user = result.Item1;
                 HttpContext.Session.SetInt32("userID", user.userID);
                 HttpContext.Session.SetString("firstName", user.firstName);
                 HttpContext.Session.SetInt32("isAdmin", 0);
