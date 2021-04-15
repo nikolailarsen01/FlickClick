@@ -225,7 +225,11 @@ namespace FlickClick.Controllers
             db.sqlUpdateOrInsertQuery(cmd);
 
             //user
-            query = "UPDATE users SET firstNameID='"+newFirstNameID+ "',lastNameID='" + newLastNameID + "', addressID='" + newAddressID + "', phoneNumber='"+user.phoneNumber+"' WHERE userID='"+userID+"'";
+            string salt = dbUser.GenerateSalt();
+            string hashedPassword = dbUser.HashPassword(user.password, salt);
+
+            query = "UPDATE users SET firstNameID='"+newFirstNameID+ "',lastNameID='" + newLastNameID + "', addressID='" + newAddressID + "', password='" + hashedPassword + "" +
+                "', passwordSalt='" + salt + "', phoneNumber='"+user.phoneNumber+"' WHERE userID='"+userID+"'";
             cmd = new MySqlCommand(query);
             db.sqlUpdateOrInsertQuery(cmd);
 

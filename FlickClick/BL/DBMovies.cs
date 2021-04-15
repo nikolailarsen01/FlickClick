@@ -13,9 +13,8 @@ namespace FlickClick
     public class DBMovies
     {
         private readonly IWebHostEnvironment rootPath;
-        private readonly string bannerPath;
         public DBMovies() { }
-        public DBMovies (IWebHostEnvironment env)
+        public DBMovies(IWebHostEnvironment env)
         {
             rootPath = env;
         }
