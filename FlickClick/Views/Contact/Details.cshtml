@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<FlickClick.Models.ContactModel>
 
 @{
-    ViewData["Title"] = "Admin Panel: Message List";
+    ViewData["Title"] = "Admin Panel: Messages";
     ViewData["Stylesheet"] = "/css/cms.css";
+    Layout = "~/Views/Shared/_CmsLayout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Index</h1>
 
 <div>
-    <h4>Send Messages</h4>
+    <h4>Received Messages</h4>
     <hr />
     @foreach (var item in Model)
     {

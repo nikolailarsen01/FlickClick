@@ -72,7 +72,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@duration", movie.duration);
             cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
-            cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
+            cmd.Parameters.AddWithValue("@comingSoon", bool.Parse(movie.comingSoon));
             if (movie.pictureImage != null)
             {
                 string picturePath = SaveAndGetBannerPath(movie);
@@ -99,7 +99,7 @@ namespace FlickClick
             cmd.Parameters.AddWithValue("@duration", movie.duration);
             cmd.Parameters.AddWithValue("@postDate", movie.postDate.ToString("yyyy-MM-dd HH:mm:ss"));
             cmd.Parameters.AddWithValue("@ageRating", movie.ageRating);
-            cmd.Parameters.AddWithValue("@comingSoon", movie.comingSoon);
+            cmd.Parameters.AddWithValue("@comingSoon", bool.Parse(movie.comingSoon));
             cmd.Parameters.AddWithValue("@picturePath", picturePath);
             cmd.Parameters.AddWithValue("@trailerPath", movie.trailerPath);
             db.sqlUpdateOrInsertQuery(cmd);

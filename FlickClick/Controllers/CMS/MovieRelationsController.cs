@@ -44,7 +44,7 @@ namespace FlickClick.Controllers.CMS
         public ActionResult Details(MovieRelationModel model, int id)
         {
             string actionContext = HttpContext.Request.Form["submit"].ToString();
-            List<string> cases = new List<string> { "Gem genre", "Gem stjerne", "Gem skribent", "Slet genre", "Slet stjerne", "Slet skribent" };
+            List<string> cases = new List<string> { "Add genre", "Add star", "Add writer", "Remove genre", "Remove star", "Remove writer" };
             switch (cases.IndexOf(actionContext))
             {
                 case 0:
