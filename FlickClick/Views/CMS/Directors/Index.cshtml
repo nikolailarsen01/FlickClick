@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<FlickClick.Models.DirectorModel>  
 @{
-    ViewData["Title"] = "Admin Panel: Instruktører";
+    ViewData["Title"] = "Admin Panel: Directors";
     ViewData["Stylesheet"] = "/css/cms.css";
     Layout = "~/Views/Shared/_CmsLayout.cshtml";
 }
@@ -8,11 +8,11 @@
 <div>
     <div class="contentContainter">
         <h1>
-            Instruktører
+            Directors
         </h1>
         <div class="sideLinks">
-            <a asp-controller="Cms" asp-action="Index">Tilbage til admin forside</a>
-            <a asp-action="Create">Tilføj instruktør</a>
+            <a asp-controller="Cms" asp-action="Index">Back to admin panel</a>
+            <a asp-action="Create">Add directors</a>
         </div>
         @foreach (var item in Model)
         {
@@ -44,10 +44,10 @@
             </dl>
             <div class="listForm">
                 <form asp-action="Edit" asp-route-id="@item.directorID" method="get">
-                    <input type="submit" name="submit" value="Rediger">
+                    <input type="submit" name="submit" value="Edit">
                 </form>
                 <form asp-action="Delete" asp-route-id="@item.directorID" method="get">
-                    <input type="submit" name="submit" value="Slet">
+                    <input type="submit" name="submit" value="Delete">
                 </form>
 
             </div>
